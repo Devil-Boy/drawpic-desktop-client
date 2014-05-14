@@ -13,6 +13,8 @@ public class ConsoleUI implements Runnable {
 	Console console;
 
 	public ConsoleUI() {
+		System.out.println("Initializing DrawPic Console UI");
+		
 		console = System.console();
 		
 		if (console == null) {
