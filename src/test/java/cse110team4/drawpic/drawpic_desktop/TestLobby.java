@@ -7,8 +7,9 @@ import org.junit.Test;
 public class TestLobby {
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testMaxPlayers() {
+		DrawLobby lob = new DrawLobby("Bob");
+		assertEquals(4, lob.maxPlayers());
 	}
 
 }
