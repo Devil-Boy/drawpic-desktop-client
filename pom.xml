@@ -78,7 +78,7 @@
         <configuration>
           <archive>
             <manifest>
-              <addClassPath>true</addClassPath>
+              <addClasspath>true</addClasspath>
               <mainClass>cse110team4.drawpic.drawpic_desktop.ui.App</mainClass>
             </manifest>
           </archive>
