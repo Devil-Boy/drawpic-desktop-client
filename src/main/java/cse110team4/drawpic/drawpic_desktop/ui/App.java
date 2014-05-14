@@ -1,4 +1,4 @@
-package cse110team4.drawpic.drawpic_desktop_client.ui;
+package cse110team4.drawpic.drawpic_desktop.ui;
 
 /**
  * This is the main class (starting point) of our desktop application
