@@ -21,7 +21,7 @@ public interface Server {
 	 * This method can be used to check if a username is available
 	 * If the given username is available, the game-timeline should continue on both the server and client
 	 * @param username The username to login with
-	 * @return null or an empty String if login is successful, otherwise a reason for failure
+	 * @return null if login is successful, otherwise a reason for failure
 	 */
 	String login(String username);
 	
