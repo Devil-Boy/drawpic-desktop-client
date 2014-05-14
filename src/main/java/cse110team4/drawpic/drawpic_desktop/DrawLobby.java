@@ -1,9 +1,7 @@
-package cse110team4.drawpic.drawpic_desktop.impl;
+package cse110team4.drawpic.drawpic_desktop;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cse110team4.drawpic.drawpic_desktop.Lobby;
 
 /**
  * This class represents a lobby for the draw game with a max of 4 players

@@ -1,10 +1,11 @@
-package cse110team4.drawpic.drawpic_desktop;
+package cse110team4.drawpic.drawpic_desktop.network;
 
 import java.util.List;
 
+import cse110team4.drawpic.drawpic_desktop.Lobby;
+
 /**
- * This class will be the interface between the server and the client
- * It should handle any connections between this client and the game server
+ * This will be the interface between the server and the client
  * 
  * @author Devil Boy (Kervin Sam)
  *
@@ -20,7 +21,7 @@ public interface Server {
 	 * This method can be used to check if a username is available
 	 * If the given username is available, the game-timeline should continue on both the server and client
 	 * @param username The username to login with
-	 * @return null if login is successful, otherwise a reason for failure
+	 * @return null or an empty String if login is successful, otherwise a reason for failure
 	 */
 	String login(String username);
 	
