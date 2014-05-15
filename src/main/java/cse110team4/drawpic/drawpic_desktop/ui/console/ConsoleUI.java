@@ -1,9 +1,11 @@
 package cse110team4.drawpic.drawpic_desktop.ui.console;
 
 import java.io.Console;
+import java.util.List;
 
-import cse110team4.drawpic.drawpic_desktop.network.Server;
-import cse110team4.drawpic.drawpic_desktop.network.dummy.MockServer;
+import cse110team4.drawpic.drawpic_core.Lobby;
+import cse110team4.drawpic.drawpic_desktop.server.MockServer;
+import cse110team4.drawpic.drawpic_desktop.server.Server;
 
 /**
  * This is the starting point for our program's console user interface
@@ -54,7 +56,30 @@ public class ConsoleUI implements Runnable {
 		System.out.println("\t1 - Create Lobby");
 		System.out.println("\t2 - Join Lobby");
 		
-		byte lobbyOption = Byte.parseByte(console.readLine()); // 1 - create lobby, 2 - join lobby
+		byte lobbyOption = 0; // 1 - create lobby, 2 - join lobby
+		while (lobbyOption == 0) {
+			try {
+				lobbyOption = Byte.parseByte(console.readLine());
+				
+				if (lobbyOption < 1 || lobbyOption > 2) {
+					System.out.println("Invalid option. Try again");
+					lobbyOption = 0;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("Could not parse input. Try again");
+			}
+		}
+		
+		if (lobbyOption == 1) {
+			// Create a lobby
+			Lobby newLobby = server.createLobby();
+		} else if (lobbyOption == 2) {
+			// List the lobbies
+			List<String> lobbyList = server.openLobbies();
+		}
+	}
+	
+	public void inLobby(Lobby lobby) {
 		
 	}
 }

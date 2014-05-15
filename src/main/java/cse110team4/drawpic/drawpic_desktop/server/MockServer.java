@@ -1,11 +1,10 @@
-package cse110team4.drawpic.drawpic_desktop.network.dummy;
+package cse110team4.drawpic.drawpic_desktop.server;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cse110team4.drawpic.drawpic_desktop.DrawLobby;
-import cse110team4.drawpic.drawpic_desktop.Lobby;
-import cse110team4.drawpic.drawpic_desktop.network.Server;
+import cse110team4.drawpic.drawpic_core.DrawLobby;
+import cse110team4.drawpic.drawpic_core.Lobby;
 
 /**
  * This is just a mock class that allows us to test other parts of the program

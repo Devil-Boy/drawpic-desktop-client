@@ -1,6 +1,6 @@
 package cse110team4.drawpic.drawpic_desktop.event.gamephase;
 
-import cse110team4.drawpic.drawpic_desktop.event.Event;
+import cse110team4.drawpic.drawpic_core.event.Event;
 
 /**
  * This event is called whenever the judging phase of the game session ends

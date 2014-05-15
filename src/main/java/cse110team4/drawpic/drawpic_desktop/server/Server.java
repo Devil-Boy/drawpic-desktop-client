@@ -1,8 +1,8 @@
-package cse110team4.drawpic.drawpic_desktop.network;
+package cse110team4.drawpic.drawpic_desktop.server;
 
 import java.util.List;
 
-import cse110team4.drawpic.drawpic_desktop.Lobby;
+import cse110team4.drawpic.drawpic_core.Lobby;
 
 /**
  * This will be the interface between the server and the client
@@ -28,12 +28,14 @@ public interface Server {
 	/**
 	 * Given the timeline is correct, this method should obtain a new lobby from the server
 	 * @return The newly created lobby
+	 * @throws UnexpectedServerException If an unexpected error occurs
 	 */
 	Lobby createLobby();
 	
 	/**
 	 * This will return a list of currently open lobbies (identified by the hosts' usernames)
 	 * @return A list of lobby host usernames
+	 * @throws UnexpectedServerException If an unexpected error occurs
 	 */
 	List<String> openLobbies();
 	
@@ -41,6 +43,7 @@ public interface Server {
 	 * This will return the lobby hosted by the given username
 	 * @param host The username of the lobby host
 	 * @return The lobby object of the specified host
+	 * @throws UnexpectedServerException If an unexpected error occurs
 	 */
 	Lobby getLobby(String host);
 	
