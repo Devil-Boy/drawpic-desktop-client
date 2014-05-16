@@ -81,15 +81,16 @@ public class ConsoleUI implements Runnable {
 		} else if (lobbyOption == 2) {
 			// Select a lobby
 			List<String> lobbyList = null;
-			int lobbyChoice = -1;
-			while (lobbyChoice == -1) {
+			int lobbyChoice = 0;
+			while (lobbyChoice == 0) {
 				System.out.println("Open lobbies: ");
 				
 				// List the lobbies
 				lobbyList = server.openLobbies();
 				for (int i=0; i < lobbyList.size(); i++) {
 					Lobby lobby = server.getLobby(lobbyList.get(i));
-					System.out.printf("\t%d - %s (%d/%d)", i, lobby.getPlayers()[0], lobby.numOfPlayers(), lobby.maxPlayers());
+					System.out.printf("\t%d - %s (%d/%d)", i + 1, lobby.getPlayers()[0], lobby.numOfPlayers(), lobby.maxPlayers());
+					System.out.println();
 				}
 				
 				// Parse their selection
@@ -98,19 +99,19 @@ public class ConsoleUI implements Runnable {
 					
 					if (lobbyChoice < 1 || lobbyChoice > lobbyList.size()) {
 						System.out.println("Invalid option. Try again");
-						lobbyChoice = -1;
-					}
-					
-					// Try joining the lobby
-					Lobby lobby = server.getLobby(lobbyList.get(lobbyChoice));
-					String joinResult = server.joinLobby(lobby);
-					if (joinResult == null) {
-						System.out.println("Joined lobby hosted by " + lobby.getPlayers()[0]);
-						
-						// Move on
-						inLobby(lobby);
+						lobbyChoice = 0;
 					} else {
-						System.out.println("Error joining lobby: " + joinResult);
+						// Try joining the lobby
+						Lobby lobby = server.getLobby(lobbyList.get(lobbyChoice - 1));
+						String joinResult = server.joinLobby(lobby);
+						if (joinResult == null) {
+							System.out.println("Joined lobby hosted by " + lobby.getPlayers()[0]);
+							
+							// Move on
+							inLobby(lobby);
+						} else {
+							System.out.println("Error joining lobby: " + joinResult);
+						}
 					}
 				} catch (NumberFormatException e) {
 					System.out.println("Could not parse input. Try again");
