@@ -69,12 +69,16 @@ public class SwingUI implements Runnable {
 		
 		// Start the login process
 		handleLogin();
+		
+		System.out.println("Login done");
 	}
 
 	private void handleLogin() {
-		LoginUI ui = new LoginUI();
+		LoginUI ui = new LoginUI(server);
 		window.add(ui);
 		window.pack();
 		window.setVisible(true);
+		
+		ui.complete();
 	}
 }
