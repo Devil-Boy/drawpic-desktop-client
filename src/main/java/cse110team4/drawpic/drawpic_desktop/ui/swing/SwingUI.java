@@ -7,11 +7,15 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import cse110team4.drawpic.drawpic_core.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.MockServer;
 import cse110team4.drawpic.drawpic_desktop.server.Server;
+import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyBrowserUI;
+import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LoginUI;
 
 public class SwingUI implements Runnable {
@@ -68,17 +72,38 @@ public class SwingUI implements Runnable {
 		}
 		
 		// Start the login process
-		handleLogin();
-		
-		System.out.println("Login done");
+		String username = handleLogin();
+		int lobbyOption = handleLobbyOption();
+		if (lobbyOption == 1) {
+			System.out.println("He's creating");
+		} else if (lobbyOption == 2) {
+			handleLobbyChoose();
+		}
 	}
-
-	private void handleLogin() {
-		LoginUI ui = new LoginUI(server);
+	
+	private void setUI(JPanel ui) {
+		window.setVisible(false);
+		window.getContentPane().removeAll();
 		window.add(ui);
 		window.pack();
 		window.setVisible(true);
-		
-		ui.complete();
+	}
+
+	private String handleLogin() {
+		LoginUI ui = new LoginUI(server);
+		setUI(ui);
+		return ui.getUsername();
+	}
+	
+	private int handleLobbyOption() {
+		LobbyOptionUI ui = new LobbyOptionUI(server);
+		setUI(ui);
+		return ui.getLobbyOption();
+	}
+	
+	private Lobby handleLobbyChoose() {
+		LobbyBrowserUI ui = new LobbyBrowserUI(server);
+		setUI(ui);
+		return ui.getLobbyJoined();
 	}
 }

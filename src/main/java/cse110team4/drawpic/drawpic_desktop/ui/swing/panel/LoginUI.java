@@ -25,19 +25,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class LoginUI extends JPanel {
+public class LoginUI extends PanelUI {
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
+	private static final int PREFERRED_WIDTH = 300;
+	private static final int PREFERRED_HEIGHT = 300;
 	
 	private static final String USERNAME_FORMAT = "([A-Z]|[a-z]|[0-9]){1,16}";
 
 	private Logo logo;
 	
-	private Server server;
-	
 	private String username;
 	
 	public LoginUI(Server server) {
-		this.server = server;
+		super(server, BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Try getting the logo
 		try {
@@ -45,12 +45,6 @@ public class LoginUI extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		// Set background color
-		setBackground(BG_COLOR);
-		
-		// Set the preferred size
-		setPreferredSize(new Dimension(300, 300));
 		
 		// Add all the content
 		addContent();
@@ -81,35 +75,37 @@ public class LoginUI extends JPanel {
 		loginArea.add(inputArea);
 		
 		final JTextField usernameField = new JTextField();
-		usernameField.setColumns(20);
+		usernameField.setColumns(18);
+		usernameField.setHorizontalAlignment(JLabel.CENTER);
 		inputArea.add(usernameField);
 		
 		JPanel buttonArea = new JPanel();
 		buttonArea.setOpaque(false);
 		loginArea.add(buttonArea);
 		
-		final JButton connectButton = new JButton("Connect");
-		connectButton.setEnabled(false);
-		buttonArea.add(connectButton);
+		final JButton loginButton = new JButton("Login");
+		loginButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		loginButton.setEnabled(false);
+		buttonArea.add(loginButton);
 		
 		// Listeners
 		usernameField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				connectButton.setEnabled(usernameField.getText().matches(USERNAME_FORMAT));
+				loginButton.setEnabled(usernameField.getText().matches(USERNAME_FORMAT));
 			}
 		});
 		
-		connectButton.addActionListener(new ActionListener() {
+		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String givenUsername = usernameField.getText();
 				
 				String loginResult = "";
 				if ((loginResult = server.login(givenUsername)) == null) {
 					username = givenUsername;
-					notifyComplete();
+					notifyGuard();
 				} else {
-					JOptionPane.showMessageDialog(null, "Error with login: " + loginResult);
+					JOptionPane.showMessageDialog(null, "Error with login:\n" + loginResult);
 				}
 			}
 		});
@@ -118,20 +114,22 @@ public class LoginUI extends JPanel {
 	/**
 	 * This will cause the guarded block to unblock
 	 */
-	public synchronized void notifyComplete() {
+	public synchronized void notifyGuard() {
 		this.notify();
 	}
 
 	/**
-	 * This is part of a guarded block
+	 * Gets the username the player logged in with
 	 * It will block thread execution until login is successful
+	 * @return The String username
 	 */
-	public synchronized void complete() {
+	public synchronized String getUsername() {
 		while (username == null) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
 			}
 		}
+		return username;
 	}
 }
