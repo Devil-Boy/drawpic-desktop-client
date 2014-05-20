@@ -13,11 +13,14 @@ import javax.swing.border.BevelBorder;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class LobbyDisplay extends JPanel {
 	private static final Color BG_COLOR = new Color(0x69, 0xed, 0x5b);
 
-	Lobby lobby;
+	private Lobby lobby;
+	private JButton joinButton;
 	
 	public LobbyDisplay(Lobby lobby) {
 		this.lobby = lobby;
@@ -56,8 +59,16 @@ public class LobbyDisplay extends JPanel {
 		playerCountField.setFont(new Font("SansSerif", Font.BOLD, 12));
 		panel_1.add(playerCountField);
 		
-		JButton joinButton = new JButton("Join");
+		joinButton = new JButton("Join");
 		joinButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		add(joinButton);
+	}
+	
+	public Lobby getLobby() {
+		return lobby;
+	}
+	
+	public JButton getButton() {
+		return joinButton;
 	}
 }

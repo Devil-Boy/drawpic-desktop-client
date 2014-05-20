@@ -10,12 +10,19 @@ import javax.swing.border.TitledBorder;
 
 import java.awt.ScrollPane;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.awt.GridLayout;
+
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
+
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class LobbyBrowserUI extends PanelUI {
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
@@ -25,12 +32,11 @@ public class LobbyBrowserUI extends PanelUI {
 	Lobby joinedLobby;
 	
 	List<Lobby> lobbies;
+	Map<Object, Lobby> buttonMap;
+	JPanel lobbyListArea;
 	
 	public LobbyBrowserUI(Server server) {
 		super(server, BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
-		
-		// Get the lobbies
-		getLobbies();
 		
 		// Add all the content
 		addContent();
@@ -53,11 +59,10 @@ public class LobbyBrowserUI extends PanelUI {
 		
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel lobbyListArea = new JPanel();
+		lobbyListArea = new JPanel();
 		lobbyListArea.setLayout(new GridLayout(0, 1, 0, 0));
-		for (Lobby lobby : lobbies) {
-			lobbyListArea.add(new LobbyDisplay(lobby));
-		}
+		
+		refreshLobbies();
 		
 		JScrollPane scrollPane = new JScrollPane(lobbyListArea);
 		panel.add(scrollPane);
@@ -68,6 +73,60 @@ public class LobbyBrowserUI extends PanelUI {
 		
 		JButton backButton = new JButton("Back");
 		backButtonArea.add(backButton);
+		
+		// Listeners
+		backButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO: Handle back button
+			}
+		});
+	}
+	
+	private void refreshLobbies() {
+		// Empty the container
+		lobbyListArea.removeAll();
+		
+		// Obtain the lobby list from the server
+		getLobbies();
+		
+		// Initialize the button-to-lobby database
+		buttonMap = new HashMap<Object, Lobby>();
+		
+		// Create the action listener
+		ActionListener buttonListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Get the lobby they chose
+				Lobby chosenLobby = buttonMap.get(e.getSource());
+				
+				// Try to join the lobby
+				String joinResult = "";
+				if ((joinResult = server.joinLobby(chosenLobby)) == null) {
+					joinedLobby = chosenLobby;
+					notifyGuard();
+				} else {
+					JOptionPane.showMessageDialog(null, "Error with join:\n" + joinResult);
+					
+					// Refresh the lobby list
+					refreshLobbies();
+				}
+			}
+		};
+		
+		// Iterate through the lobbies we got from the server
+		for (Lobby lobby : lobbies) {
+			// Wrap lobbies in displays
+			LobbyDisplay lobbyDisplay = new LobbyDisplay(lobby);
+			
+			// Map the join button the lobby
+			buttonMap.put(lobbyDisplay.getButton(), lobby);
+			
+			// Set the button's listener
+			lobbyDisplay.getButton().addActionListener(buttonListener);
+			
+			// Add the display to the container
+			lobbyListArea.add(lobbyDisplay);
+		}
 	}
 	
 	/**
