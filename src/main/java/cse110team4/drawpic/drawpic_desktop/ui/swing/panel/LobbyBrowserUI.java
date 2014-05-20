@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.GridLayout;
 import javax.swing.JScrollPane;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import java.awt.BorderLayout;
 
 public class LobbyBrowserUI extends PanelUI {
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
@@ -42,7 +45,7 @@ public class LobbyBrowserUI extends PanelUI {
 	}
 
 	private void addContent() {
-		setLayout(new GridLayout(0, 1, 0, 0));
+		setLayout(new BorderLayout(0, 0));
 		JPanel panel = new JPanel();
 		panel.setOpaque(false);
 		panel.setBorder(new TitledBorder(null, "Open Lobbies:", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -58,6 +61,13 @@ public class LobbyBrowserUI extends PanelUI {
 		
 		JScrollPane scrollPane = new JScrollPane(lobbyListArea);
 		panel.add(scrollPane);
+		
+		JPanel backButtonArea = new JPanel();
+		backButtonArea.setOpaque(false);
+		add(backButtonArea, BorderLayout.SOUTH);
+		
+		JButton backButton = new JButton("Back");
+		backButtonArea.add(backButton);
 	}
 	
 	/**
