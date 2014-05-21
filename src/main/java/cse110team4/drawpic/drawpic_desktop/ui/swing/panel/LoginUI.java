@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class LoginUI extends PanelUI {
+public class LoginUI extends DrawPicUI {
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;
 	private static final int PREFERRED_HEIGHT = 300;
