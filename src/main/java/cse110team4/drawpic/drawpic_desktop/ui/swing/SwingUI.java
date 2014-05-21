@@ -14,6 +14,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import cse110team4.drawpic.drawpic_core.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.MockServer;
 import cse110team4.drawpic.drawpic_desktop.server.Server;
+import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.DrawPicUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyBrowserUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LoginUI;
@@ -73,18 +74,29 @@ public class SwingUI implements Runnable {
 		
 		// Start the login process
 		String username = handleLogin();
-		int lobbyOption = handleLobbyOption();
-		if (lobbyOption == 1) {
-			System.out.println("He's creating");
-		} else if (lobbyOption == 2) {
-			handleLobbyChoose();
+		
+		// Start the lobby joining process
+		Lobby joinedLobby = null;
+		while (joinedLobby == null) {
+			int lobbyOption = handleLobbyOption();
+			if (lobbyOption == 1) {
+				// TODO: Handle creation of a lobby
+				System.out.println("He's creating");
+			} else if (lobbyOption == 2) {
+				joinedLobby = handleLobbyChoose();
+				
+				if (joinedLobby != null) {
+					// Move on
+				}
+			}
 		}
 	}
 	
-	private void setUI(JPanel ui) {
+	private void setUI(DrawPicUI ui) {
 		window.setVisible(false);
 		window.getContentPane().removeAll();
 		window.add(ui);
+		window.getRootPane().setDefaultButton(ui.getDefaultButton());
 		window.pack();
 		window.setVisible(true);
 	}

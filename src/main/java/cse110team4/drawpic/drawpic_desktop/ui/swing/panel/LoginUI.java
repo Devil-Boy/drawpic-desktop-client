@@ -84,6 +84,7 @@ public class LoginUI extends DrawPicUI {
 		loginArea.add(buttonArea);
 		
 		final JButton loginButton = new JButton("Login");
+		setDefaultButton(loginButton);
 		loginButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		loginButton.setEnabled(false);
 		buttonArea.add(loginButton);

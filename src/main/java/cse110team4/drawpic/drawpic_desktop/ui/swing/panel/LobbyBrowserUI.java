@@ -29,6 +29,8 @@ public class LobbyBrowserUI extends DrawPicUI {
 	private static final int PREFERRED_WIDTH = 300;
 	private static final int PREFERRED_HEIGHT = 300;
 	
+	private boolean block = true;
+	
 	Lobby joinedLobby;
 	
 	List<Lobby> lobbies;
@@ -67,17 +69,26 @@ public class LobbyBrowserUI extends DrawPicUI {
 		JScrollPane scrollPane = new JScrollPane(lobbyListArea);
 		panel.add(scrollPane);
 		
-		JPanel backButtonArea = new JPanel();
-		backButtonArea.setOpaque(false);
-		add(backButtonArea, BorderLayout.SOUTH);
+		JPanel buttonArea = new JPanel();
+		buttonArea.setOpaque(false);
+		add(buttonArea, BorderLayout.SOUTH);
 		
 		JButton backButton = new JButton("Back");
-		backButtonArea.add(backButton);
+		buttonArea.add(backButton);
+		
+		JButton refreshButton = new JButton("Refresh");
+		buttonArea.add(refreshButton);
 		
 		// Listeners
 		backButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Handle back button
+				unblock();
+			}
+		});
+		
+		refreshButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				refreshLobbies();
 			}
 		});
 	}
@@ -103,7 +114,7 @@ public class LobbyBrowserUI extends DrawPicUI {
 				String joinResult = "";
 				if ((joinResult = server.joinLobby(chosenLobby)) == null) {
 					joinedLobby = chosenLobby;
-					notifyGuard();
+					unblock();
 				} else {
 					JOptionPane.showMessageDialog(null, "Error with join:\n" + joinResult);
 					
@@ -132,17 +143,18 @@ public class LobbyBrowserUI extends DrawPicUI {
 	/**
 	 * This will cause the guarded block to unblock
 	 */
-	public synchronized void notifyGuard() {
+	public synchronized void unblock() {
+		block = false;
 		this.notify();
 	}
 
 	/**
 	 * Gets the lobby that the player joined
-	 * It will block thread execution until login is successful
-	 * @return The lobby object
+	 * It will block thread execution until login is successful or player uses back button
+	 * @return The lobby object, or null if they didn't choose one
 	 */
 	public synchronized Lobby getLobbyJoined() {
-		while (joinedLobby == null) {
+		while (block) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
