@@ -138,6 +138,9 @@ public class LobbyBrowserUI extends DrawPicUI {
 			// Add the display to the container
 			lobbyListArea.add(lobbyDisplay);
 		}
+		
+		// Display the changes
+		revalidate();
 	}
 	
 	/**

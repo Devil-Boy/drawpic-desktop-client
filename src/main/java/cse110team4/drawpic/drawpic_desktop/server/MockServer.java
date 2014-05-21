@@ -17,11 +17,32 @@ import cse110team4.drawpic.drawpic_core.Lobby;
 public class MockServer implements Server {
 	String username;
 	
-	List<String> mockLobbies;
+	List<Lobby> mockLobbies;
+	
+	Random random = new Random();
 
 	@Override
 	public void connect() throws Exception {
-		// Do nothing
+		// Create mock lobby
+		mockLobbies = new ArrayList<Lobby>();
+		
+		mockLobbies.add(new DrawLobby("Bob"));
+		mockLobbies.add(new DrawLobby("Rick"));
+		mockLobbies.add(new DrawLobby("Lobber"));
+		mockLobbies.add(new DrawLobby("Ashley"));
+		mockLobbies.add(new DrawLobby("Jonotan"));
+		mockLobbies.add(new DrawLobby("Ricky"));
+		mockLobbies.add(new DrawLobby("Parser"));
+		mockLobbies.add(new DrawLobby("Sean"));
+		mockLobbies.add(new DrawLobby("Parsley"));
+		mockLobbies.add(new DrawLobby("Ellis"));
+		mockLobbies.add(new DrawLobby("Jo"));
+		mockLobbies.add(new DrawLobby("Boba"));
+		mockLobbies.add(new DrawLobby("Jint"));
+		mockLobbies.add(new DrawLobby("Rhe"));
+		mockLobbies.add(new DrawLobby("Lila"));
+		mockLobbies.add(new DrawLobby("Panic"));
+		mockLobbies.add(new DrawLobby("Syd"));
 	}
 
 	@Override
@@ -56,23 +77,15 @@ public class MockServer implements Server {
 
 	@Override
 	public List<String> openLobbies() {
-		Random num = new Random();
-		ArrayList<String> array = new ArrayList<String>();
-		array.add("Bob");
-		array.add("Rick");
-		array.add("Lobber");
-		array.add("Ashley");
-		array.add("Jonotan");
-		array.add("Ricky");
-		array.add("Parser");
-		array.add("Sean");
-		// Create some mock lobbies
-		if (mockLobbies == null) {
-			mockLobbies = new ArrayList<String>();
-			mockLobbies.add(array.get(num.nextInt(7)));
-			mockLobbies.add(array.get(num.nextInt(7)));
-			mockLobbies.add(array.get(num.nextInt(7)));
-			mockLobbies.add(array.get(num.nextInt(7)));
+		List<String> openLobbies = new ArrayList<String>();
+		
+		// Choose the amount to send
+		int size = random.nextInt(mockLobbies.size());
+		
+		// Send random lobbies
+		List<Lobby> tempList = new ArrayList<Lobby>(mockLobbies);
+		for (int i=0; i < size; i++) {
+			openLobbies.add(tempList.remove(random.nextInt(tempList.size())).getHost());
 		}
 		
 		// Block for a bit
@@ -83,7 +96,7 @@ public class MockServer implements Server {
 			e.printStackTrace();
 		}
 		
-		return mockLobbies;
+		return openLobbies;
 	}
 
 	@Override
