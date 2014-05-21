@@ -2,6 +2,7 @@ package cse110team4.drawpic.drawpic_desktop.server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import cse110team4.drawpic.drawpic_core.DrawLobby;
 import cse110team4.drawpic.drawpic_core.Lobby;
@@ -55,17 +56,23 @@ public class MockServer implements Server {
 
 	@Override
 	public List<String> openLobbies() {
+		Random num = new Random();
+		ArrayList<String> array = new ArrayList<String>();
+		array.add("Bob");
+		array.add("Rick");
+		array.add("Lobber");
+		array.add("Ashley");
+		array.add("Jonotan");
+		array.add("Ricky");
+		array.add("Parser");
+		array.add("Sean");
 		// Create some mock lobbies
 		if (mockLobbies == null) {
 			mockLobbies = new ArrayList<String>();
-			mockLobbies.add("Bob");
-			mockLobbies.add("Rick");
-			mockLobbies.add("Lobber");
-			mockLobbies.add("Ashley");
-			mockLobbies.add("Jonotan");
-			mockLobbies.add("Ricky");
-			mockLobbies.add("Parser");
-			mockLobbies.add("Sean");
+			mockLobbies.add(array.get(num.nextInt(7)));
+			mockLobbies.add(array.get(num.nextInt(7)));
+			mockLobbies.add(array.get(num.nextInt(7)));
+			mockLobbies.add(array.get(num.nextInt(7)));
 		}
 		
 		// Block for a bit
