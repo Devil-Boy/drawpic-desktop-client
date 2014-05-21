@@ -1,6 +1,7 @@
 package cse110team4.drawpic.drawpic_desktop.ui.swing.panel;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 
 import cse110team4.drawpic.drawpic_core.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.Server;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.awt.GridLayout;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -62,7 +64,6 @@ public class LobbyBrowserUI extends DrawPicUI {
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		lobbyListArea = new JPanel();
-		lobbyListArea.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		refreshLobbies();
 		
@@ -124,19 +125,28 @@ public class LobbyBrowserUI extends DrawPicUI {
 			}
 		};
 		
-		// Iterate through the lobbies we got from the server
-		for (Lobby lobby : lobbies) {
-			// Wrap lobbies in displays
-			LobbyDisplay lobbyDisplay = new LobbyDisplay(lobby);
+		if (lobbies.isEmpty()) {
+			lobbyListArea.setLayout(new FlowLayout());
 			
-			// Map the join button the lobby
-			buttonMap.put(lobbyDisplay.getButton(), lobby);
+			lobbyListArea.add(new JLabel("There are no open lobbies"));
+		} else {
+			// Use grid layout
+			lobbyListArea.setLayout(new GridLayout(0, 1, 0, 0));
 			
-			// Set the button's listener
-			lobbyDisplay.getButton().addActionListener(buttonListener);
-			
-			// Add the display to the container
-			lobbyListArea.add(lobbyDisplay);
+			// Iterate through the lobbies we got from the server
+			for (Lobby lobby : lobbies) {
+				// Wrap lobbies in displays
+				LobbyDisplay lobbyDisplay = new LobbyDisplay(lobby);
+				
+				// Map the join button the lobby
+				buttonMap.put(lobbyDisplay.getButton(), lobby);
+				
+				// Set the button's listener
+				lobbyDisplay.getButton().addActionListener(buttonListener);
+				
+				// Add the display to the container
+				lobbyListArea.add(lobbyDisplay);
+			}
 		}
 		
 		// Display the changes
