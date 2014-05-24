@@ -13,17 +13,17 @@ import org.apache.activemq.ActiveMQConnection;
 
 import cse110team4.drawpic.drawpic_core.ActiveMQConstants;
 import cse110team4.drawpic.drawpic_core.Lobby;
+import cse110team4.drawpic.drawpic_desktop.server.network.ActiveMQConnectionOut;
+import cse110team4.drawpic.drawpic_desktop.server.network.ServerConnectionIn;
+import cse110team4.drawpic.drawpic_desktop.server.network.ServerConnectionOut;
 
 public class ActiveMQServer implements Server {
 	
 	private Connection connection;
 	private Session session;
 	
-	private Destination serverQueue;
-	private Queue clientQueue;
-	
-	private MessageProducer sender;
-	private MessageConsumer receiver;
+	private ServerConnectionOut out;
+	private ServerConnectionIn in;
 	
 	public ActiveMQServer() {
 	}
@@ -38,17 +38,19 @@ public class ActiveMQServer implements Server {
 		// Create the session
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		
-		// Get the server's queue
-		serverQueue = session.createQueue(ActiveMQConstants.SERVER_QUEUE);
+		// Initialize the outbound handler
+		out = new ActiveMQConnectionOut(session);
+		
+		// Initialize the inbound handler
+		
+		
+		/*
 		
 		//Creates the client queue
 		clientQueue = session.createTemporaryQueue();
 		
-		// Create the message producer
-		sender = session.createProducer(serverQueue);
-		
 		// Create the message receiver
-		receiver = session.createConsumer(clientQueue);
+		receiver = session.createConsumer(clientQueue);*/
 	}
 
 	@Override
