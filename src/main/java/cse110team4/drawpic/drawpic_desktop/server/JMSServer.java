@@ -13,19 +13,23 @@ import org.apache.activemq.ActiveMQConnection;
 
 import cse110team4.drawpic.drawpic_core.ActiveMQConstants;
 import cse110team4.drawpic.drawpic_core.Lobby;
-import cse110team4.drawpic.drawpic_desktop.server.network.ActiveMQConnectionOut;
-import cse110team4.drawpic.drawpic_desktop.server.network.ServerConnectionIn;
-import cse110team4.drawpic.drawpic_desktop.server.network.ServerConnectionOut;
+import cse110team4.drawpic.drawpic_core.network.PacketReceiver;
+import cse110team4.drawpic.drawpic_core.network.PacketSender;
+import cse110team4.drawpic.drawpic_core.network.jms.JMSPacketReceiver;
+import cse110team4.drawpic.drawpic_core.network.jms.JMSPacketSender;
 
-public class ActiveMQServer implements Server {
+public class JMSServer implements Server {
 	
 	private Connection connection;
 	private Session session;
 	
-	private ServerConnectionOut out;
-	private ServerConnectionIn in;
+	private Queue serverQueue;
+	private Queue clientQueue;
 	
-	public ActiveMQServer() {
+	private JMSPacketSender out;
+	private JMSPacketReceiver in;
+	
+	public JMSServer() {
 	}
 
 	@Override
@@ -38,19 +42,19 @@ public class ActiveMQServer implements Server {
 		// Create the session
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		
-		// Initialize the outbound handler
-		out = new ActiveMQConnectionOut(session);
+		// Get a hold of the server's queue
+		serverQueue = session.createQueue(ActiveMQConstants.SERVER_QUEUE);
 		
-		// Initialize the inbound handler
-		
-		
-		/*
-		
-		//Creates the client queue
+		// Create the queue to receive messages from
 		clientQueue = session.createTemporaryQueue();
 		
-		// Create the message receiver
-		receiver = session.createConsumer(clientQueue);*/
+		// Prepare the packet sender
+		out = new JMSPacketSender(session, serverQueue);
+		out.setReplyTo(clientQueue);
+		
+		// Prepare the packet receiver
+		in = new JMSPacketReceiver(session, clientQueue);
+		in.setPacketHandler(null); // TODO: Set this to an actual packet handler
 	}
 
 	@Override
