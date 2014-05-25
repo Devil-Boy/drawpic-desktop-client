@@ -3,9 +3,6 @@ package cse110team4.drawpic.drawpic_desktop.server;
 import java.util.List;
 
 import javax.jms.Connection;
-import javax.jms.Destination;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 
@@ -13,10 +10,8 @@ import org.apache.activemq.ActiveMQConnection;
 
 import cse110team4.drawpic.drawpic_core.ActiveMQConstants;
 import cse110team4.drawpic.drawpic_core.Lobby;
-import cse110team4.drawpic.drawpic_core.network.PacketReceiver;
-import cse110team4.drawpic.drawpic_core.network.PacketSender;
-import cse110team4.drawpic.drawpic_core.network.jms.JMSPacketReceiver;
-import cse110team4.drawpic.drawpic_core.network.jms.JMSPacketSender;
+import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketReceiver;
+import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketSender;
 
 public class JMSServer implements Server {
 	
