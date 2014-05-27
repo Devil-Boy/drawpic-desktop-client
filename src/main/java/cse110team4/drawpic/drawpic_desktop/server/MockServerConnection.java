@@ -14,7 +14,7 @@ import cse110team4.drawpic.drawpic_core.Lobby;
  * @author Devil Boy (Kervin Sam)
  *
  */
-public class MockServer implements Server {
+public class MockServerConnection implements ServerConnection {
 	String username;
 	
 	List<Lobby> mockLobbies;

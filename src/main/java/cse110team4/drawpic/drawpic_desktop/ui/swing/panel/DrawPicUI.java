@@ -6,15 +6,15 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import cse110team4.drawpic.drawpic_desktop.server.Server;
+import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 
 public abstract class DrawPicUI extends JPanel {
 
-	Server server;
+	ServerConnection server;
 	
 	JButton defaultButton;
 	
-	public DrawPicUI(Server server, Color bgColor, int preferredWidth, int preferredHeight) {
+	public DrawPicUI(ServerConnection server, Color bgColor, int preferredWidth, int preferredHeight) {
 		this.server = server;
 		
 		// Set background color

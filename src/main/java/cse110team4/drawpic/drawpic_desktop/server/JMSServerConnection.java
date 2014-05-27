@@ -13,7 +13,7 @@ import cse110team4.drawpic.drawpic_core.Lobby;
 import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketReceiver;
 import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketSender;
 
-public class JMSServer implements Server {
+public class JMSServerConnection implements ServerConnection {
 	
 	private Connection connection;
 	private Session session;
@@ -24,7 +24,7 @@ public class JMSServer implements Server {
 	private JMSPacketSender out;
 	private JMSPacketReceiver in;
 	
-	public JMSServer() {
+	public JMSServerConnection() {
 	}
 
 	@Override

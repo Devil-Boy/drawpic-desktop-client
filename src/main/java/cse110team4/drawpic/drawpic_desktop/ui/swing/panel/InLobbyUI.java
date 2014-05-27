@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_core.Lobby;
-import cse110team4.drawpic.drawpic_desktop.server.Server;
+import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.Logo;
 
 import java.awt.BorderLayout;
@@ -34,7 +34,7 @@ public class InLobbyUI extends DrawPicUI {
 	
 	private Map<Object, String> buttonMap;
 
-	public InLobbyUI(Server server) {
+	public InLobbyUI(ServerConnection server) {
 		super(server, BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Try getting the logo

@@ -12,8 +12,8 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import cse110team4.drawpic.drawpic_core.Lobby;
-import cse110team4.drawpic.drawpic_desktop.server.MockServer;
-import cse110team4.drawpic.drawpic_desktop.server.Server;
+import cse110team4.drawpic.drawpic_desktop.server.MockServerConnection;
+import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.DrawPicUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyBrowserUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionUI;
@@ -25,7 +25,7 @@ public class SwingUI implements Runnable {
 	
 	private BufferedImage icon;
 	
-	Server server;
+	ServerConnection server;
 	
 	public SwingUI() {
 		System.out.println("Initializing DrawPic GUI...");
@@ -62,7 +62,7 @@ public class SwingUI implements Runnable {
 
 	@Override
 	public void run() {
-		server = new MockServer();
+		server = new MockServerConnection();
 		
 		try {
 			server.connect();

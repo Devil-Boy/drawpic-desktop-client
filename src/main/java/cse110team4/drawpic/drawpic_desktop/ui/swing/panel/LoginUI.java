@@ -2,7 +2,7 @@ package cse110team4.drawpic.drawpic_desktop.ui.swing.panel;
 
 import javax.swing.JPanel;
 
-import cse110team4.drawpic.drawpic_desktop.server.Server;
+import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.Logo;
 
 import javax.swing.JTextField;
@@ -36,7 +36,7 @@ public class LoginUI extends DrawPicUI {
 	
 	private String username;
 	
-	public LoginUI(Server server) {
+	public LoginUI(ServerConnection server) {
 		super(server, BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Try getting the logo

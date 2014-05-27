@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 
 import cse110team4.drawpic.drawpic_core.Lobby;
-import cse110team4.drawpic.drawpic_desktop.server.Server;
+import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -39,7 +39,7 @@ public class LobbyBrowserUI extends DrawPicUI {
 	Map<Object, Lobby> buttonMap;
 	JPanel lobbyListArea;
 	
-	public LobbyBrowserUI(Server server) {
+	public LobbyBrowserUI(ServerConnection server) {
 		super(server, BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Add all the content

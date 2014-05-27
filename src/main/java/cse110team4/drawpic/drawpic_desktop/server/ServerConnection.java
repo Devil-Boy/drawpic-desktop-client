@@ -5,12 +5,12 @@ import java.util.List;
 import cse110team4.drawpic.drawpic_core.Lobby;
 
 /**
- * This will be the interface between the server and the client
+ * This will be the interface for the client to the server
  * 
  * @author Devil Boy (Kervin Sam)
  *
  */
-public interface Server {
+public interface ServerConnection {
 	
 	/**
 	 * This method handles the initial network connection

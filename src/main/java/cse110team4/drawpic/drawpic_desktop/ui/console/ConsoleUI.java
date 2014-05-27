@@ -4,8 +4,8 @@ import java.io.Console;
 import java.util.List;
 
 import cse110team4.drawpic.drawpic_core.Lobby;
-import cse110team4.drawpic.drawpic_desktop.server.MockServer;
-import cse110team4.drawpic.drawpic_desktop.server.Server;
+import cse110team4.drawpic.drawpic_desktop.server.MockServerConnection;
+import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 
 /**
  * This is the starting point for our program's console user interface
@@ -17,7 +17,7 @@ public class ConsoleUI implements Runnable {
 	
 	Console console;
 	
-	Server server;
+	ServerConnection server;
 
 	public ConsoleUI() {
 		System.out.println("Initializing DrawPic Console UI");
@@ -34,7 +34,7 @@ public class ConsoleUI implements Runnable {
 	 */
 	@Override
 	public void run() {
-		server = new MockServer();
+		server = new MockServerConnection();
 		
 		try {
 			server.connect();

@@ -5,7 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
-import cse110team4.drawpic.drawpic_desktop.server.Server;
+import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,7 +24,7 @@ public class LobbyOptionUI extends DrawPicUI {
 	
 	private int lobbyChoice;
 	
-	public LobbyOptionUI(Server server) {
+	public LobbyOptionUI(ServerConnection server) {
 		super(server, BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Add all the content
