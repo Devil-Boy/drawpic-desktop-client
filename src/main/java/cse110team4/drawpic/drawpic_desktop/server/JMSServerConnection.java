@@ -12,8 +12,12 @@ import cse110team4.drawpic.drawpic_core.ActiveMQConstants;
 import cse110team4.drawpic.drawpic_core.Lobby;
 import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketReceiver;
 import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketSender;
+import cse110team4.drawpic.drawpic_core.protocol.packet.PacketHandler;
+import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.PacketConnect;
 
 public class JMSServerConnection implements ServerConnection {
+	
+	private Thread mainThread;
 	
 	private Connection connection;
 	private Session session;
@@ -24,11 +28,21 @@ public class JMSServerConnection implements ServerConnection {
 	private JMSPacketSender out;
 	private JMSPacketReceiver in;
 	
+	private PacketHandler packetHandler;
+	
+	private boolean connected;
+	
 	public JMSServerConnection() {
+	}
+	
+	public Thread getMainThread() {
+		return mainThread;
 	}
 
 	@Override
 	public void connect() throws Exception {
+		mainThread = Thread.currentThread();
+		
 		connection = ActiveMQConnection.makeConnection(ActiveMQConstants.USERNAME, ActiveMQConstants.PASSWORD, ActiveMQConstants.ACTIVEMQ_URL);
 		connection.start();
 		
@@ -49,7 +63,12 @@ public class JMSServerConnection implements ServerConnection {
 		
 		// Prepare the packet receiver
 		in = new JMSPacketReceiver(session, clientQueue);
-		in.setPacketHandler(null); // TODO: Set this to an actual packet handler
+		in.setPacketHandler(packetHandler = new ClientPacketHandler());
+		
+		// Send the first packet
+		out.sendPacket(new PacketConnect());
+		
+		
 	}
 
 	@Override
