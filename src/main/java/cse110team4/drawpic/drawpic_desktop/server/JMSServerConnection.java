@@ -1,7 +1,9 @@
 package cse110team4.drawpic.drawpic_desktop.server;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.jms.Connection;
 import javax.jms.Queue;
@@ -18,10 +20,13 @@ import cse110team4.drawpic.drawpic_core.protocol.packet.Packet;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketHandler;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketReply;
 import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.PacketConnect;
+import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.PacketLoginResponse;
+import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.PacketLogin;
 
 public class JMSServerConnection implements ServerConnection {
 	
 	private static final long CONNECT_TIMEOUT = 6;
+	private static final long LOGIN_TIMEOUT = 6;
 	
 	private Thread mainThread;
 	
@@ -76,7 +81,7 @@ public class JMSServerConnection implements ServerConnection {
 		connectPacket.setCorrelationID(CorrelationIDFactory.getFactory().randomCorrelationID());
 		
 		// Prepare for a reply
-		PacketReply<PacketConnect> reply = new PacketReply<PacketConnect>(in, connectPacket.getID(), connectPacket.getCorrelationID());
+		PacketReply<PacketConnect> reply = new PacketReply<PacketConnect>(in, (byte) 0x01, connectPacket.getCorrelationID());
 		
 		// Send the packet
 		out.sendPacket(connectPacket);
@@ -87,8 +92,33 @@ public class JMSServerConnection implements ServerConnection {
 
 	@Override
 	public String login(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		// Prepare the login packet
+		Packet loginPacket = new PacketLogin(username);
+		loginPacket.setCorrelationID(CorrelationIDFactory.getFactory().randomCorrelationID());
+		
+		// Prepare for the reply
+		PacketReply<PacketLoginResponse> reply = new PacketReply<PacketLoginResponse>(in, (byte) 0x03, loginPacket.getCorrelationID());
+		
+		// Send the login packet
+		try {
+			out.sendPacket(loginPacket);
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+		
+		// Wait for the reply
+		try {
+			PacketLoginResponse loginResult = reply.get(LOGIN_TIMEOUT, TimeUnit.SECONDS);
+			if (loginResult.getLoginSuccess()) {
+				return null;
+			} else {
+				return loginResult.getFailReason();
+			}
+		} catch (TimeoutException e) {
+			return e.getMessage();
+		} catch (InterruptedException | ExecutionException e) {
+			throw new UnexpectedServerException(e);
+		}
 	}
 
 	@Override

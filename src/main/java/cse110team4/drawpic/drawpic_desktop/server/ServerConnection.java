@@ -14,6 +14,8 @@ public interface ServerConnection {
 	
 	/**
 	 * This method handles the initial network connection
+	 * It should block until the connection is completed or times out
+	 * @throws Exception if there is a connection issue or timeout
 	 */
 	void connect() throws Exception;
 
