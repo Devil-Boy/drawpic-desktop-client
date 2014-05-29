@@ -1,6 +1,7 @@
 package cse110team4.drawpic.drawpic_desktop.server;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.jms.Connection;
 import javax.jms.Queue;
@@ -10,12 +11,17 @@ import org.apache.activemq.ActiveMQConnection;
 
 import cse110team4.drawpic.drawpic_core.ActiveMQConstants;
 import cse110team4.drawpic.drawpic_core.Lobby;
+import cse110team4.drawpic.drawpic_core.protocol.CorrelationIDFactory;
 import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketReceiver;
 import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketSender;
+import cse110team4.drawpic.drawpic_core.protocol.packet.Packet;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketHandler;
+import cse110team4.drawpic.drawpic_core.protocol.packet.PacketReply;
 import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.PacketConnect;
 
 public class JMSServerConnection implements ServerConnection {
+	
+	private static final long CONNECT_TIMEOUT = 6;
 	
 	private Thread mainThread;
 	
@@ -63,12 +69,20 @@ public class JMSServerConnection implements ServerConnection {
 		
 		// Prepare the packet receiver
 		in = new JMSPacketReceiver(session, clientQueue);
-		in.setPacketHandler(packetHandler = new ClientPacketHandler());
+		in.addPacketHandler(packetHandler = new ClientPacketHandler());
 		
-		// Send the first packet
-		out.sendPacket(new PacketConnect());
+		// Prepare the first packet
+		Packet connectPacket = new PacketConnect();
+		connectPacket.setCorrelationID(CorrelationIDFactory.getFactory().randomCorrelationID());
 		
+		// Prepare for a reply
+		PacketReply<PacketConnect> reply = new PacketReply<PacketConnect>(in, connectPacket.getID(), connectPacket.getCorrelationID());
 		
+		// Send the packet
+		out.sendPacket(connectPacket);
+		
+		// Wait for the reply
+		reply.get(CONNECT_TIMEOUT, TimeUnit.SECONDS);
 	}
 
 	@Override
