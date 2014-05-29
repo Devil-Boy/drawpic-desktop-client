@@ -8,6 +8,8 @@ import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.PacketLogin;
 
 public class ClientPacketHandler implements PacketHandler {
 	
+	private ResponseNotifier responseNotifier;
+	
 	public ClientPacketHandler() {
 		
 	}
@@ -15,6 +17,10 @@ public class ClientPacketHandler implements PacketHandler {
 	@Override
 	public void handlePacket(Packet packet) {
 		byte packetID = packet.getID();
+		
+		if (responseNotifier != null && responseNotifier.getResponseID() == packetID) {
+			responseNotifier.receivedResponse(packet);
+		}
 		
 		if (packetID == 0x01) {
 			PacketConnect p = (PacketConnect) packet;

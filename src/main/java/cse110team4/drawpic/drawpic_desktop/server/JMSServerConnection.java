@@ -30,7 +30,7 @@ public class JMSServerConnection implements ServerConnection {
 	
 	private PacketHandler packetHandler;
 	
-	private boolean connected;
+	private boolean isConnected;
 	
 	public JMSServerConnection() {
 	}

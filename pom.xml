@@ -12,11 +12,18 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <drawpic-core.version>0.0.1-SNAPSHOT</drawpic-core.version>
+    <drawpic-core.version>0.0.2-SNAPSHOT</drawpic-core.version>
     <org.springframework.version>4.0.3.RELEASE</org.springframework.version>
     <org.apache.activemq.version>5.8.0</org.apache.activemq.version>
     <junit.version>4.11</junit.version>
   </properties>
+  
+  <repositories>
+    <repository>
+      <id>devil-jenkins-repo</id>
+      <url>http://devilhost.pinoygamers.info:8080/plugin/repository/everything/</url>
+    </repository>
+  </repositories>
 
   <dependencies>
     <dependency>
@@ -81,6 +88,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
         <configuration>
           <archive>
             <manifest>
@@ -93,6 +101,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
+        <version>2.3</version>
         <executions>
           <execution>
             <phase>package</phase>
