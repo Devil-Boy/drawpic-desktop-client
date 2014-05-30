@@ -19,9 +19,9 @@ import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketSender;
 import cse110team4.drawpic.drawpic_core.protocol.packet.Packet;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketHandler;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketReply;
-import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.PacketConnect;
-import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.PacketLoginResponse;
-import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.PacketLogin;
+import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet01Connect;
+import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet03LoginResponse;
+import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet02Login;
 
 public class JMSServerConnection implements ServerConnection {
 	
@@ -77,11 +77,11 @@ public class JMSServerConnection implements ServerConnection {
 		in.addPacketHandler(packetHandler = new ClientPacketHandler());
 		
 		// Prepare the first packet
-		Packet connectPacket = new PacketConnect();
+		Packet connectPacket = new Packet01Connect();
 		connectPacket.setCorrelationID(CorrelationIDFactory.getFactory().randomCorrelationID());
 		
 		// Prepare for a reply
-		PacketReply<PacketConnect> reply = new PacketReply<PacketConnect>(in, (byte) 0x01, connectPacket.getCorrelationID());
+		PacketReply<Packet01Connect> reply = new PacketReply<Packet01Connect>(in, (byte) 0x01, connectPacket.getCorrelationID());
 		
 		// Send the packet
 		out.sendPacket(connectPacket);
@@ -93,11 +93,11 @@ public class JMSServerConnection implements ServerConnection {
 	@Override
 	public String login(String username) {
 		// Prepare the login packet
-		Packet loginPacket = new PacketLogin(username);
+		Packet loginPacket = new Packet02Login(username);
 		loginPacket.setCorrelationID(CorrelationIDFactory.getFactory().randomCorrelationID());
 		
 		// Prepare for the reply
-		PacketReply<PacketLoginResponse> reply = new PacketReply<PacketLoginResponse>(in, (byte) 0x03, loginPacket.getCorrelationID());
+		PacketReply<Packet03LoginResponse> reply = new PacketReply<Packet03LoginResponse>(in, (byte) 0x03, loginPacket.getCorrelationID());
 		
 		// Send the login packet
 		try {
@@ -108,7 +108,7 @@ public class JMSServerConnection implements ServerConnection {
 		
 		// Wait for the reply
 		try {
-			PacketLoginResponse loginResult = reply.get(LOGIN_TIMEOUT, TimeUnit.SECONDS);
+			Packet03LoginResponse loginResult = reply.get(LOGIN_TIMEOUT, TimeUnit.SECONDS);
 			if (loginResult.getLoginSuccess()) {
 				return null;
 			} else {
