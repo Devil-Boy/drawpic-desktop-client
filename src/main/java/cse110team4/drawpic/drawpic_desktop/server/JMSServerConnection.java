@@ -28,8 +28,6 @@ public class JMSServerConnection implements ServerConnection {
 	private static final long CONNECT_TIMEOUT = 6;
 	private static final long LOGIN_TIMEOUT = 6;
 	
-	private Thread mainThread;
-	
 	private Connection connection;
 	private Session session;
 	
@@ -41,19 +39,11 @@ public class JMSServerConnection implements ServerConnection {
 	
 	private PacketHandler packetHandler;
 	
-	private boolean isConnected;
-	
 	public JMSServerConnection() {
-	}
-	
-	public Thread getMainThread() {
-		return mainThread;
 	}
 
 	@Override
 	public void connect() throws Exception {
-		mainThread = Thread.currentThread();
-		
 		connection = ActiveMQConnection.makeConnection(ActiveMQConstants.USERNAME, ActiveMQConstants.PASSWORD, ActiveMQConstants.ACTIVEMQ_URL);
 		connection.start();
 		
