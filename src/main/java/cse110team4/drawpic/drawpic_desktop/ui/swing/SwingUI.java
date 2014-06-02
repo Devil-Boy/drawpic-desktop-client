@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import cse110team4.drawpic.drawpic_core.Lobby;
+import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.MockServerConnection;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.DrawPicUI;
@@ -46,7 +46,7 @@ public class SwingUI implements Runnable {
 		this.window = new JFrame("DrawPic");
 		
 		// Get the icon
-		InputStream iconStream = getClass().getResourceAsStream("/icon.png");
+		InputStream iconStream = getClass().getResourceAsStream("/graphics/icon.png");
 		try {
 			icon = ImageIO.read(iconStream);
 		} catch (IOException e) {

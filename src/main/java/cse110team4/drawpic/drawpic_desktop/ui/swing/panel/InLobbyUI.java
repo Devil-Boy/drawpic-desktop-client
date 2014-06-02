@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JPanel;
 
-import cse110team4.drawpic.drawpic_core.Lobby;
+import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.Logo;
 
