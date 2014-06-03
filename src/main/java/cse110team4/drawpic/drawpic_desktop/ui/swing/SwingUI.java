@@ -17,7 +17,7 @@ import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.DrawPicUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyBrowserUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionUI;
-import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LoginUI;
+import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LoginView;
 
 public class SwingUI implements Runnable {
 	
@@ -102,7 +102,7 @@ public class SwingUI implements Runnable {
 	}
 
 	private String handleLogin() {
-		LoginUI ui = new LoginUI(server);
+		LoginView ui = new LoginView(server);
 		setUI(ui);
 		return ui.getUsername();
 	}

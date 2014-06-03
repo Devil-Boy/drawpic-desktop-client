@@ -3,6 +3,8 @@ package cse110team4.drawpic.drawpic_desktop.ui.swing.panel;
 import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
+import cse110team4.drawpic.drawpic_desktop.ui.ILogInController;
+import cse110team4.drawpic.drawpic_desktop.ui.ILogInView;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.Logo;
 
 import javax.swing.JTextField;
@@ -25,7 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class LoginUI extends DrawPicUI {
+public class LoginView extends DrawPicUI implements ILogInView{
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;
 	private static final int PREFERRED_HEIGHT = 300;
@@ -34,10 +36,11 @@ public class LoginUI extends DrawPicUI {
 
 	private Logo logo;
 	
-	private String username;
+	private JTextField usernameField;
+	private JButton loginButton;
 	
-	public LoginUI(ServerConnection server) {
-		super(server, BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
+	public LoginView() {
+		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Try getting the logo
 		try {
@@ -74,7 +77,7 @@ public class LoginUI extends DrawPicUI {
 		inputArea.setOpaque(false);
 		loginArea.add(inputArea);
 		
-		final JTextField usernameField = new JTextField();
+		usernameField = new JTextField();
 		usernameField.setColumns(18);
 		usernameField.setHorizontalAlignment(JLabel.CENTER);
 		inputArea.add(usernameField);
@@ -83,7 +86,7 @@ public class LoginUI extends DrawPicUI {
 		buttonArea.setOpaque(false);
 		loginArea.add(buttonArea);
 		
-		final JButton loginButton = new JButton("Login");
+		loginButton = new JButton("Login");
 		setDefaultButton(loginButton);
 		loginButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		loginButton.setEnabled(false);
@@ -97,40 +100,22 @@ public class LoginUI extends DrawPicUI {
 			}
 		});
 		
-		loginButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String givenUsername = usernameField.getText();
-				
-				String loginResult = "";
-				if ((loginResult = server.login(givenUsername)) == null) {
-					username = givenUsername;
-					notifyGuard();
-				} else {
-					JOptionPane.showMessageDialog(null, "Error with login:\n" + loginResult);
-				}
-			}
-		});
-	}
-	
-	/**
-	 * This will cause the guarded block to unblock
-	 */
-	public synchronized void notifyGuard() {
-		this.notify();
+		
 	}
 
-	/**
-	 * Gets the username the player logged in with
-	 * It will block thread execution until login is successful
-	 * @return The String username
-	 */
-	public synchronized String getUsername() {
-		while (username == null) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
+	@Override
+	public String getInput() {
+		return usernameField.getText();
+	}
+
+	@Override
+	public void setController(final ILogInController controller) {
+		controller.setView(this);
+		
+		loginButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.login();
 			}
-		}
-		return username;
+		});
 	}
 }
