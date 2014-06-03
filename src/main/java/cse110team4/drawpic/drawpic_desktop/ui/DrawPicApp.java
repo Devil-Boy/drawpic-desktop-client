@@ -50,7 +50,14 @@ public class DrawPicApp implements ClientListener{
 	
     public static void main(String[] args) {
     	new DrawPicApp();
-    	
+    	Runnable localUI;
+    	if (Arrays.asList(args).contains("-console")) {
+    		localUI = new ConsoleUI();
+    	}
+    	else {
+    		localUI = new SwingUI();
+    	}
+    	localUI.run();
     }
 
 	@Override
