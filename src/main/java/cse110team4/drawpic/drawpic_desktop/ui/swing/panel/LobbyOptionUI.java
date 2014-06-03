@@ -29,6 +29,8 @@ public class LobbyOptionUI extends DrawPicUI implements ILobbyChoiceView{
 	private static final int PREFERRED_HEIGHT = 300;
 	
 	private int lobbyChoice;
+	private JButton createLobbyButton;
+	private JButton joinLobbyButton;
 	
 	public LobbyOptionUI(ServerConnection server) {
 		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
@@ -48,7 +50,7 @@ public class LobbyOptionUI extends DrawPicUI implements ILobbyChoiceView{
 		createLobbyArea.setOpaque(false);
 		add(createLobbyArea);
 		
-		JButton createLobbyButton = new JButton("Create Lobby");
+		createLobbyButton = new JButton("Create Lobby");
 		createLobbyButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		createLobbyButton.putClientProperty("JComponent.sizeVariant", "large");
 		createLobbyArea.add(createLobbyButton);
@@ -57,7 +59,7 @@ public class LobbyOptionUI extends DrawPicUI implements ILobbyChoiceView{
 		joinLobbyArea.setOpaque(false);
 		add(joinLobbyArea);
 		
-		JButton joinLobbyButton = new JButton("Join Lobby");
+		joinLobbyButton = new JButton("Join Lobby");
 		joinLobbyButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		joinLobbyButton.putClientProperty("JComponent.sizeVariant", "large");
 		joinLobbyArea.add(joinLobbyButton);
@@ -70,14 +72,13 @@ public class LobbyOptionUI extends DrawPicUI implements ILobbyChoiceView{
 		createLobbyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lobbyChoice = 1;
-				notifyGuard();
+				
 			}
 		});
 		
 		joinLobbyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lobbyChoice = 2;
-				notifyGuard();
 			}
 		});
 	}
@@ -105,8 +106,19 @@ public class LobbyOptionUI extends DrawPicUI implements ILobbyChoiceView{
 	}
 
 	@Override
-	public void setController(ILobbyChoiceController controller) {
-		// TODO Auto-generated method stub
+	public void setController(final ILobbyChoiceController controller) {
+		controller.setView(this);
 		
+		createLobbyButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.LobbyOption();
+			}
+		});
+		
+		joinLobbyButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.LobbyOption();
+			}
+		});
 	}
 }
