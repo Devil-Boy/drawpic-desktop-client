@@ -11,6 +11,10 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
+import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
+import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.listener.ClientListener;
 import cse110team4.drawpic.drawpic_desktop.server.JMSServerConnection;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.console.ConsoleUI;
@@ -22,9 +26,14 @@ import cse110team4.drawpic.drawpic_desktop.ui.swing.SwingUI;
  * @author Devil Boy (Kervin Sam)
  *
  */
-public class DrawPicApp {
+public class DrawPicApp implements ClientListener{
 	
-	static ServerConnection server;
+	ServerConnection server;
+	
+	public DrawPicApp(){
+		server = DesktopBeans.getContext().getBean(JMSServerConnection.class);
+		DesktopBeans.getContext().getBean(EventDispatcher.class).register(ClientUsernameSetEvent.class, this);
+	}
 	
 	public enum ClientPhase{
 		LOGIN,
@@ -39,6 +48,20 @@ public class DrawPicApp {
 	ClientPhase currentPhase;
 	
     public static void main(String[] args) {
-    	server = DesktopBeans.getContext().getBean(JMSServerConnection.class);
+    	new DrawPicApp();
+    	
     }
+
+	@Override
+	public void usernameSet(ClientUsernameSetEvent event) {
+		if(event.getUsername() != null){
+			this.currentPhase = ClientPhase.LOBBY_OPTION;
+		}
+	}
+
+	@Override
+	public void lobbySet(ClientLobbySetEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -6,7 +6,7 @@ package cse110team4.drawpic.drawpic_desktop.ui;
  */
 public interface ILobbyChoiceController {
 
-	public void LobbyOption();
+	public void setLobbyOption();
 	
 	public void setView(ILobbyChoiceView viewer);
 }

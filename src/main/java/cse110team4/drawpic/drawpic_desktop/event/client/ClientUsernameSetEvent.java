@@ -11,7 +11,7 @@ public class ClientUsernameSetEvent extends ClientEvent {
 	
 	/**
 	 * Gets the newly set username
-	 * @return THe username set to
+	 * @return The username set to
 	 */
 	public String getUsername() {
 		return getClientData().getUsername();
