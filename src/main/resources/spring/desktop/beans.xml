@@ -27,4 +27,8 @@
 		class="cse110team4.drawpic.drawpic_desktop.server.ClientPacketHandler"
 		scope="singleton">
 	</bean>
+	<bean id="eventDispatcher"
+		class="cse110team4.drawpic.drawpic_desktop.event.EventDispatcher"
+		scope="singleton">
+	</bean>
 </beans>

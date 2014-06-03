@@ -12,11 +12,6 @@ import java.util.Map;
  *
  */
 public class EventDispatcher {
-	
-	/**
-	 * The singleton dispatcher for the program
-	 */
-	private static EventDispatcher singleton = new EventDispatcher();
 
 	/**
 	 * The map of registered listeners
@@ -28,14 +23,6 @@ public class EventDispatcher {
 	 */
 	public EventDispatcher() {
 		eventListeners = new HashMap<Class, List>();
-	}
-	
-	/**
-	 * Gets the singleton dispatcher object
-	 * @return An EventDispatcher
-	 */
-	public static EventDispatcher getDispatcher() {
-		return singleton;
 	}
 	
 	/**

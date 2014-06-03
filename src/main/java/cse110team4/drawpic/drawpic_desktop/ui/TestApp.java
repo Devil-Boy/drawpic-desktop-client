@@ -11,6 +11,6 @@ public class TestApp {
 		
 		System.err.println(sc.connect());
 		
-		System.err.println(sc.login("Rcfsdfasfak"));
+		System.err.println(sc.login("AK"));
 	}
 }
