@@ -2,8 +2,8 @@ package cse110team4.drawpic.drawpic_desktop.server;
 
 import cse110team4.drawpic.drawpic_core.protocol.packet.Packet;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketHandler;
-import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet01Connect;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet03Response;
+import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet01Connect;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet02Login;
 
 public class ClientPacketHandler implements PacketHandler {

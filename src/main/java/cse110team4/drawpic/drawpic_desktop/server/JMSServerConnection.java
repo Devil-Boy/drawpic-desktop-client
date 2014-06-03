@@ -19,8 +19,8 @@ import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketSender;
 import cse110team4.drawpic.drawpic_core.protocol.packet.Packet;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketHandler;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketReply;
-import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet01Connect;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet03Response;
+import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet01Connect;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet02Login;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet07CreateLobby;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
@@ -71,7 +71,7 @@ public class JMSServerConnection implements ServerConnection {
 			// TODO: Add close hook to clean up on disconnect
 			
 			// Create the session
-			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			session = DesktopBeans.getContext().getBean("activeMQSession", Session.class);
 			
 			// Get a hold of the server's queue
 			serverQueue = session.createQueue(ActiveMQConstants.SERVER_QUEUE);
@@ -80,11 +80,13 @@ public class JMSServerConnection implements ServerConnection {
 			clientQueue = session.createTemporaryQueue();
 			
 			// Prepare the packet sender
-			out = new JMSPacketSender(session, serverQueue);
+			out = DesktopBeans.getContext().getBean("jmsPacketSender", JMSPacketSender.class);
+			out.setProducer(session.createProducer(clientQueue));
 			out.setReplyTo(clientQueue);
 			
 			// Prepare the packet receiver
-			in = new JMSPacketReceiver(session, clientQueue);
+			in = DesktopBeans.getContext().getBean("jmsPacketReceiver", JMSPacketReceiver.class);
+			session.createConsumer(clientQueue).setMessageListener(in);
 			in.addPacketHandler(packetHandler = new ClientPacketHandler());
 		} catch (JMSException e) {
 			return "Failed to initialize ActiveMQ";
@@ -189,7 +191,6 @@ public class JMSServerConnection implements ServerConnection {
 
 	@Override
 	public String getLobbies(List<Lobby> lobbies) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
