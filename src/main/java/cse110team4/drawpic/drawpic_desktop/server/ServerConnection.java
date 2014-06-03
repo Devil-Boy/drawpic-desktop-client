@@ -35,10 +35,9 @@ public interface ServerConnection {
 	
 	/**
 	 * Tells the server to create the given lobby
-	 * @param lobby The lobby to create
 	 * @return null if lobby creation was successful, otherwise a reason for failure
 	 */
-	String createLobby(Lobby lobby);
+	String createLobby();
 	
 	/**
 	 * Fills the given list with the currently available lobbies
@@ -54,4 +53,10 @@ public interface ServerConnection {
 	 * @return null if join is successful, otherwise a reason for failure
 	 */
 	String joinLobby(Lobby lobby);
+	
+	/**
+	 * Leaves the current lobby
+	 * @return null if successful, otherwise a reason for failure
+	 */
+	String leaveLobby();
 }

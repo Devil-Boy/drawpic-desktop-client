@@ -21,10 +21,15 @@ import cse110team4.drawpic.drawpic_core.protocol.packet.PacketDistributor;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketHandler;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketReply;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet03Response;
+import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet09LobbyList;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet01Connect;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet02Login;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet07CreateLobby;
+import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet08GetLobbies;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
+import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
+import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
 
 /**
  * This represents a connection to a JMS server
@@ -144,6 +149,7 @@ public class JMSServerConnection implements ServerConnection {
 			Packet03Response loginResult = reply.get(CONNECTION_TIMEOUT, TimeUnit.SECONDS);
 			if (loginResult.getSuccess()) {
 				clientData.setUsername(username);
+				DesktopBeans.getContext().getBean(EventDispatcher.class).call(new ClientUsernameSetEvent(clientData));
 				return null;
 			} else {
 				return loginResult.getFailReason();
@@ -158,7 +164,7 @@ public class JMSServerConnection implements ServerConnection {
 	}
 
 	@Override
-	public String createLobby(Lobby lobby) {
+	public String createLobby() {
 		// Prepare packet
 		Packet lobbyPacket = new Packet07CreateLobby();
 		lobbyPacket.setCorrelationID(cID());
@@ -177,7 +183,10 @@ public class JMSServerConnection implements ServerConnection {
 		try {
 			Packet03Response lobbyResult = reply.get(CONNECTION_TIMEOUT, TimeUnit.SECONDS);
 			if (lobbyResult.getSuccess()) {
-				clientData.setLobby(lobby);
+				Lobby newLobby = DesktopBeans.getContext().getBean("defaultFourPlayerLobby", Lobby.class);
+				newLobby.setHost(clientData.getUsername());
+				clientData.setLobby(newLobby);
+				DesktopBeans.getContext().getBean(EventDispatcher.class).call(new ClientLobbySetEvent(clientData));
 				return null;
 			} else {
 				return lobbyResult.getFailReason();
@@ -193,11 +202,42 @@ public class JMSServerConnection implements ServerConnection {
 
 	@Override
 	public String getLobbies(List<Lobby> lobbies) {
-		return null;
+		// Prepare packet
+		Packet lobbyPacket = new Packet08GetLobbies();
+		lobbyPacket.setCorrelationID(cID());
+		
+		// Prepare for the reply
+		PacketReply<Packet09LobbyList> reply = new PacketReply<Packet09LobbyList>(packetDistributor, (byte) 0x09, lobbyPacket.getCorrelationID());
+		
+		// Send the packet
+		try {
+			out.sendPacket(lobbyPacket);
+		} catch (Exception e) {
+			return "Could not send packet to create lobby";
+		}
+		
+		// Wait for the reply
+		try {
+			Packet09LobbyList lobbyResult = reply.get(CONNECTION_TIMEOUT, TimeUnit.SECONDS);
+			lobbies.addAll(lobbyResult.getLobbies());
+			return null;
+		} catch (TimeoutException e) {
+			return "Connection timed out after " + CONNECTION_TIMEOUT + " seconds";
+		} catch (InterruptedException e) {
+			return "Interrupted while waiting for response";
+		} catch (ExecutionException e) {
+			return "Error while attempting to get response: " + e.getCause().getMessage();
+		}
 	}
 
 	@Override
 	public String joinLobby(Lobby lobby) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String leaveLobby() {
 		// TODO Auto-generated method stub
 		return null;
 	}

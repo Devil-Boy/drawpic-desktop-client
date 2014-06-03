@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import cse110team4.drawpic.drawpic_core.player.ClientData;
 import cse110team4.drawpic.drawpic_core.player.FourPlayerLobby;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
+import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
+import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
 
 /**
  * This is just a mock class that allows us to test other parts of the program
@@ -16,7 +19,7 @@ import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
  *
  */
 public class MockServerConnection implements ServerConnection {
-	String username;
+	ClientData clientData;
 	
 	String[] names = { "Bob", "Rick", "Lobber", "Ashley", "Jonotan",
 			"Ricky", "Parser", "Sean", "Parsley", "Ellis", "Jo",
@@ -25,6 +28,11 @@ public class MockServerConnection implements ServerConnection {
 	List<Lobby> mockLobbies;
 	
 	Random random = new Random();
+	
+	@Override
+	public ClientData getClientData() {
+		return clientData;
+	}
 
 	@Override
 	public String connect() {
@@ -44,7 +52,7 @@ public class MockServerConnection implements ServerConnection {
 	@Override
 	public String login(String username) {
 		// Store the username
-		this.username = username;
+		this.clientData.setUsername(username);
 		
 		// Block for a bit
 		try {
@@ -54,12 +62,14 @@ public class MockServerConnection implements ServerConnection {
 			e.printStackTrace();
 		}
 		
+		DesktopBeans.getContext().getBean(EventDispatcher.class).call(new ClientUsernameSetEvent(clientData));
+		
 		// Return successful
 		return null;
 	}
 
 	@Override
-	public String createLobby(Lobby lobby) {
+	public String createLobby() {
 		// Block for a bit
 		try {
 			Thread.sleep(1000);
@@ -106,5 +116,13 @@ public class MockServerConnection implements ServerConnection {
 		// Return success
 		return null;
 	}
+
+	@Override
+	public String leaveLobby() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 }
