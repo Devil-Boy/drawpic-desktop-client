@@ -33,6 +33,7 @@ public class DrawPicApp implements ClientListener{
 	public DrawPicApp(){
 		server = DesktopBeans.getContext().getBean(JMSServerConnection.class);
 		DesktopBeans.getContext().getBean(EventDispatcher.class).register(ClientUsernameSetEvent.class, this);
+		DesktopBeans.getContext().getBean(EventDispatcher.class).register(ClientLobbySetEvent.class, this);
 	}
 	
 	public enum ClientPhase{
@@ -61,7 +62,9 @@ public class DrawPicApp implements ClientListener{
 
 	@Override
 	public void lobbySet(ClientLobbySetEvent event) {
-		// TODO Auto-generated method stub
+		if(event.getLobby() != null){
+			this.currentPhase = ClientPhase.IN_LOBBY;
+		}
 		
 	}
 }
