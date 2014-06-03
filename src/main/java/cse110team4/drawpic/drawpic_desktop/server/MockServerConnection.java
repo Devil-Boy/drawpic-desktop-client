@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import cse110team4.drawpic.drawpic_core.DrawLobby;
-import cse110team4.drawpic.drawpic_core.Lobby;
+import cse110team4.drawpic.drawpic_core.player.FourPlayerLobby;
+import cse110team4.drawpic.drawpic_core.player.Lobby;
+import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 
 /**
  * This is just a mock class that allows us to test other parts of the program
@@ -17,32 +18,27 @@ import cse110team4.drawpic.drawpic_core.Lobby;
 public class MockServerConnection implements ServerConnection {
 	String username;
 	
+	String[] names = { "Bob", "Rick", "Lobber", "Ashley", "Jonotan",
+			"Ricky", "Parser", "Sean", "Parsley", "Ellis", "Jo",
+			"Boba", "Jint", "Rhe", "Lila", "Panic", "Syd"};
+	
 	List<Lobby> mockLobbies;
 	
 	Random random = new Random();
 
 	@Override
-	public void connect() throws Exception {
+	public String connect() {
 		// Create mock lobby
 		mockLobbies = new ArrayList<Lobby>();
 		
-		mockLobbies.add(new DrawLobby("Bob"));
-		mockLobbies.add(new DrawLobby("Rick"));
-		mockLobbies.add(new DrawLobby("Lobber"));
-		mockLobbies.add(new DrawLobby("Ashley"));
-		mockLobbies.add(new DrawLobby("Jonotan"));
-		mockLobbies.add(new DrawLobby("Ricky"));
-		mockLobbies.add(new DrawLobby("Parser"));
-		mockLobbies.add(new DrawLobby("Sean"));
-		mockLobbies.add(new DrawLobby("Parsley"));
-		mockLobbies.add(new DrawLobby("Ellis"));
-		mockLobbies.add(new DrawLobby("Jo"));
-		mockLobbies.add(new DrawLobby("Boba"));
-		mockLobbies.add(new DrawLobby("Jint"));
-		mockLobbies.add(new DrawLobby("Rhe"));
-		mockLobbies.add(new DrawLobby("Lila"));
-		mockLobbies.add(new DrawLobby("Panic"));
-		mockLobbies.add(new DrawLobby("Syd"));
+		for (String name : names) {
+			Lobby lobby = DesktopBeans.getContext().getBean("defualtFourPlayerLobby", Lobby.class);
+			lobby.setHost(name);
+			
+			mockLobbies.add(lobby);
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -63,7 +59,7 @@ public class MockServerConnection implements ServerConnection {
 	}
 
 	@Override
-	public Lobby createLobby() {
+	public String createLobby(Lobby lobby) {
 		// Block for a bit
 		try {
 			Thread.sleep(1000);
@@ -72,20 +68,18 @@ public class MockServerConnection implements ServerConnection {
 			e.printStackTrace();
 		}
 		
-		return new DrawLobby(username);
+		return null;
 	}
 
 	@Override
-	public List<String> openLobbies() {
-		List<String> openLobbies = new ArrayList<String>();
-		
+	public String getLobbies(List<Lobby> openLobbies) {
 		// Choose the amount to send
 		int size = random.nextInt(mockLobbies.size());
 		
 		// Send random lobbies
 		List<Lobby> tempList = new ArrayList<Lobby>(mockLobbies);
 		for (int i=0; i < size; i++) {
-			openLobbies.add(tempList.remove(random.nextInt(tempList.size())).getHost());
+			openLobbies.add(tempList.remove(random.nextInt(tempList.size())));
 		}
 		
 		// Block for a bit
@@ -96,13 +90,7 @@ public class MockServerConnection implements ServerConnection {
 			e.printStackTrace();
 		}
 		
-		return openLobbies;
-	}
-
-	@Override
-	public Lobby getLobby(String host) {
-		// Return a new lobby
-		return new DrawLobby(host);
+		return null;
 	}
 
 	@Override

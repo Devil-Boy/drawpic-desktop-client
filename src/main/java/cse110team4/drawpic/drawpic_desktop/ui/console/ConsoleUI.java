@@ -3,7 +3,7 @@ package cse110team4.drawpic.drawpic_desktop.ui.console;
 import java.io.Console;
 import java.util.List;
 
-import cse110team4.drawpic.drawpic_core.Lobby;
+import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.MockServerConnection;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 

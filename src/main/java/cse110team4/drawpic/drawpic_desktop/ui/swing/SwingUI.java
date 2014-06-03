@@ -11,13 +11,13 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import cse110team4.drawpic.drawpic_core.Lobby;
+import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.MockServerConnection;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.DrawPicUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyBrowserUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionUI;
-import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LoginUI;
+import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LoginView;
 
 public class SwingUI implements Runnable {
 	
@@ -46,7 +46,7 @@ public class SwingUI implements Runnable {
 		this.window = new JFrame("DrawPic");
 		
 		// Get the icon
-		InputStream iconStream = getClass().getResourceAsStream("/icon.png");
+		InputStream iconStream = getClass().getResourceAsStream("/graphics/icon.png");
 		try {
 			icon = ImageIO.read(iconStream);
 		} catch (IOException e) {
@@ -102,7 +102,7 @@ public class SwingUI implements Runnable {
 	}
 
 	private String handleLogin() {
-		LoginUI ui = new LoginUI(server);
+		LoginView ui = new LoginView(server);
 		setUI(ui);
 		return ui.getUsername();
 	}

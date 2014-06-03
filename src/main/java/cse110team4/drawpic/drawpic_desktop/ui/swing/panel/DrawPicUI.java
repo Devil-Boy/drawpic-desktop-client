@@ -9,13 +9,10 @@ import javax.swing.JPanel;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 
 public abstract class DrawPicUI extends JPanel {
-
-	ServerConnection server;
 	
 	JButton defaultButton;
 	
-	public DrawPicUI(ServerConnection server, Color bgColor, int preferredWidth, int preferredHeight) {
-		this.server = server;
+	public DrawPicUI(Color bgColor, int preferredWidth, int preferredHeight) {
 		
 		// Set background color
 		setBackground(bgColor);

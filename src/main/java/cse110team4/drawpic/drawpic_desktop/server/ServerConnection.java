@@ -2,7 +2,8 @@ package cse110team4.drawpic.drawpic_desktop.server;
 
 import java.util.List;
 
-import cse110team4.drawpic.drawpic_core.Lobby;
+import cse110team4.drawpic.drawpic_core.player.ClientData;
+import cse110team4.drawpic.drawpic_core.player.Lobby;
 
 /**
  * This will be the interface for the client to the server
@@ -13,41 +14,38 @@ import cse110team4.drawpic.drawpic_core.Lobby;
 public interface ServerConnection {
 	
 	/**
+	 * Gets the object storing this client's data
+	 * @return The ClientData object
+	 */
+	ClientData getClientData();
+	
+	/**
 	 * This method handles the initial network connection
 	 * It should block until the connection is completed or times out
-	 * @throws Exception if there is a connection issue or timeout
+	 * @return null if successful, otherwise the reason for failure
 	 */
-	void connect() throws Exception;
+	String connect();
 
 	/**
-	 * This method can be used to check if a username is available
-	 * If the given username is available, the game-timeline should continue on both the server and client
+	 * This method will attempt to log the user into the server
 	 * @param username The username to login with
 	 * @return null if login is successful, otherwise a reason for failure
 	 */
 	String login(String username);
 	
 	/**
-	 * Given the timeline is correct, this method should obtain a new lobby from the server
-	 * @return The newly created lobby
-	 * @throws UnexpectedServerException If an unexpected error occurs
+	 * Tells the server to create the given lobby
+	 * @param lobby The lobby to create
+	 * @return null if lobby creation was successful, otherwise a reason for failure
 	 */
-	Lobby createLobby();
+	String createLobby(Lobby lobby);
 	
 	/**
-	 * This will return a list of currently open lobbies (identified by the hosts' usernames)
-	 * @return A list of lobby host usernames
-	 * @throws UnexpectedServerException If an unexpected error occurs
+	 * Fills the given list with the currently available lobbies
+	 * @param lobbies The list to fill
+	 * @return null if lobby creation was successful, otherwise a reason for failure
 	 */
-	List<String> openLobbies();
-	
-	/**
-	 * This will return the lobby hosted by the given username
-	 * @param host The username of the lobby host
-	 * @return The lobby object of the specified host
-	 * @throws UnexpectedServerException If an unexpected error occurs
-	 */
-	Lobby getLobby(String host);
+	 String getLobbies(List<Lobby> lobbies);
 	
 	/**
 	 * Attempts to join the selected lobby

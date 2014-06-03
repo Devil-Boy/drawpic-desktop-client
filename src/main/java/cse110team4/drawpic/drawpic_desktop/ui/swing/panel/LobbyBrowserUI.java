@@ -3,7 +3,7 @@ package cse110team4.drawpic.drawpic_desktop.ui.swing.panel;
 import java.awt.Color;
 import java.awt.FlowLayout;
 
-import cse110team4.drawpic.drawpic_core.Lobby;
+import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 
 import javax.swing.JPanel;

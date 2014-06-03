@@ -1,6 +1,6 @@
 package cse110team4.drawpic.drawpic_desktop.event.lobby;
 
-import cse110team4.drawpic.drawpic_core.Lobby;
+import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.event.listener.LobbyListener;
 
 /**
