@@ -8,13 +8,6 @@
 
 	
 	<import resource="classpath*:spring/core/beans.xml" />
-	<bean id="activeMQConnection"
-		class="org.apache.activemq.ActiveMQConnection"
-		factory-method="makeConnection">
-		<constructor-arg ref="activeMQUsername"></constructor-arg>
-		<constructor-arg ref="activeMQPassword"></constructor-arg>
-		<constructor-arg ref="activeMQURL"></constructor-arg>
-	</bean>
 
 
 	<bean id="jmsServerConnection"
