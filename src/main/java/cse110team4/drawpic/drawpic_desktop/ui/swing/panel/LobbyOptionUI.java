@@ -6,10 +6,16 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
+import cse110team4.drawpic.drawpic_desktop.ui.ILobbyChoiceController;
+import cse110team4.drawpic.drawpic_desktop.ui.ILobbyChoiceView;
+import cse110team4.drawpic.drawpic_desktop.ui.ILogInController;
+
 import java.awt.GridLayout;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -17,7 +23,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class LobbyOptionUI extends DrawPicUI {
+public class LobbyOptionUI extends DrawPicUI implements ILobbyChoiceView{
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;
 	private static final int PREFERRED_HEIGHT = 300;
@@ -25,7 +31,7 @@ public class LobbyOptionUI extends DrawPicUI {
 	private int lobbyChoice;
 	
 	public LobbyOptionUI(ServerConnection server) {
-		super(server, BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
+		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Add all the content
 		addContent();
@@ -96,5 +102,11 @@ public class LobbyOptionUI extends DrawPicUI {
 			}
 		}
 		return lobbyChoice;
+	}
+
+	@Override
+	public void setController(ILobbyChoiceController controller) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -7,11 +7,14 @@
 
 
 	
+	<import resource="ui.xml" />
 	<import resource="classpath*:spring/core/beans.xml" />
 
 
+	
 	<bean id="jmsServerConnection"
 		class="cse110team4.drawpic.drawpic_desktop.server.JMSServerConnection">
 		<constructor-arg ref="clientData"></constructor-arg>
 	</bean>
+	
 </beans>
