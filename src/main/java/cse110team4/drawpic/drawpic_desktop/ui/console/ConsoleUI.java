@@ -44,41 +44,59 @@ public class ConsoleUI implements Runnable {
 			return;
 		}
 		
-		String givenUsername = console.readLine("Choose a username: ");
+		String givenUsername = promptUsername();
+		byte lobbyOption = promptCreateJoinLobby();
+		Lobby joinedLobby = runLobbyOption(lobbyOption);
+		inLobby(joinedLobby, givenUsername);
+	}
+	
+	private String promptUsername() {
+		String username = console.readLine("Choose a username: ");
 		
 		String loginResult = "";
-		while ((loginResult = server.login(givenUsername)) != null) {
+		while ((loginResult = server.login(username)) != null) {
 			System.out.println("Error with login: " + loginResult);
-			givenUsername = console.readLine("Choose a different username: ");
+			username = console.readLine("Choose a different username: ");
 		}
 		
+		return username;
+	}
+	
+	private byte promptCreateJoinLobby() {
 		System.out.println("Options:");
 		System.out.println("\t1 - Create Lobby");
 		System.out.println("\t2 - Join Lobby");
 		
-		byte lobbyOption = 0; // 1 - create lobby, 2 - join lobby
-		while (lobbyOption == 0) {
+		byte choice = 0;
+		
+		while (choice == 0) {
 			try {
-				lobbyOption = Byte.parseByte(console.readLine());
+				choice = Byte.parseByte(console.readLine());
 				
-				if (lobbyOption < 1 || lobbyOption > 2) {
+				if (choice < 1 || choice > 2) {
 					System.out.println("Invalid option. Try again");
-					lobbyOption = 0;
+					choice = 0;
 				}
 			} catch (NumberFormatException e) {
 				System.out.println("Could not parse input. Try again");
 			}
 		}
 		
-		if (lobbyOption == 1) {
+		return choice;
+	}
+	
+	private Lobby runLobbyOption(byte option) {
+		if (option == 1) {
 			System.out.println("Creating a lobby...");
 			
 			// Create a lobby
 			Lobby newLobby = server.createLobby();
-			
+			newLobby.addPlayer("bob");
+			newLobby.addPlayer("kirk");
+			newLobby.addPlayer("kervin");
 			// Move on
-			inLobby(newLobby);
-		} else if (lobbyOption == 2) {
+			return newLobby;
+		} else if (option == 2) {
 			// Select a lobby
 			List<String> lobbyList = null;
 			int lobbyChoice = 0;
@@ -108,9 +126,10 @@ public class ConsoleUI implements Runnable {
 							System.out.println("Joined lobby hosted by " + lobby.getPlayers()[0]);
 							
 							// Move on
-							inLobby(lobby);
+							return lobby;
 						} else {
 							System.out.println("Error joining lobby: " + joinResult);
+							return null;
 						}
 					}
 				} catch (NumberFormatException e) {
@@ -118,9 +137,100 @@ public class ConsoleUI implements Runnable {
 				}
 			}
 		}
+		return null;
 	}
 	
-	public void inLobby(Lobby lobby) {
+	private void displayLobby(Lobby lobby) {
+		int numPlayer = 0;
+		if (lobby == null) {
+			System.out.println("Lobby is null");
+		}
+		System.out.println("Players in lobby:");
+		for (String player : lobby.getPlayers()) {
+			if (player!= null) {
+				numPlayer++;
+				System.out.println(numPlayer + " - " + player);
+			}
+		}
+	}
+	
+	private void inLobby(Lobby lobby, String username) {
+		if (username == lobby.getHost()) {
+			int hostSelection = 0;
+			while (hostSelection == 0) {
+				System.out.println("\nLobby Host Options: ");
+				System.out.println("\t1 - Refresh list of players");
+				System.out.println("\t2 - Kick a player");
+				System.out.println("\t3 - Change lobby session options");
+				System.out.println("\t4 - End lobby");
+				System.out.println("\t5 - Start game");
+				
+				try {
+					hostSelection = Integer.parseInt(console.readLine());
+					if (hostSelection < 1 || hostSelection > 5) {
+						System.out.println("Invalid selection.");
+						hostSelection = 0;
+					} else {
+						if (hostSelection == 1) {
+							displayLobby(lobby);
+						}
+						else if (hostSelection == 2) {
+							String kickPlayerResult = "";
+							if (hostKickPlayer(lobby) == null) {
+								System.out.println("Player has been successfully kicked");
+							}
+							else {
+								System.out.println("Problem kicking player (" + kickPlayerResult + ")");
+							}
+						}
+						else if (hostSelection == 3) {
+							//insert options stuff here
+						}
+						else if (hostSelection == 4) {
+							//yeah;
+						}
+						else if (hostSelection == 5) {
+							//Start game
+						}
+						
+						hostSelection = 0;
+					}
+				} catch (NumberFormatException e) {
+					System.out.println("Could not parse input. Try again.");
+				}
+			}
+		} 
+	}
+	
+	private String hostKickPlayer(Lobby lobby) {
+		System.out.println("Select a player to kick:");
+		displayLobby(lobby);
 		
+		int choiceToKick = -1;
+		
+		String kickResult = "";
+		
+		while (choiceToKick == -1) {
+			choiceToKick = Integer.parseInt(console.readLine());
+			if (choiceToKick < 2 || choiceToKick > 4) {
+				System.out.println("Invalid choice, try again.");
+				displayLobby(lobby);
+				choiceToKick = -1;
+				continue;
+			}
+			
+			int playerNum = 0;
+			for (String player : lobby.getPlayers()) {
+				if (player != null) {
+					playerNum++;
+					if  (playerNum == choiceToKick) {
+						lobby.removePlayer(player);
+						return null;
+					}
+				}
+			}
+		}
+		kickResult = "Could not kick player";
+		return kickResult;
 	}
 }
