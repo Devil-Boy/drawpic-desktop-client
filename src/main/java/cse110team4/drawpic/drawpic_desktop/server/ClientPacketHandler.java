@@ -7,10 +7,6 @@ import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet01Conn
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet02Login;
 
 public class ClientPacketHandler implements PacketHandler {
-	
-	public ClientPacketHandler() {
-		
-	}
 
 	@Override
 	public void handlePacket(Packet packet) {

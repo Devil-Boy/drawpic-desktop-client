@@ -14,9 +14,10 @@ import cse110team4.drawpic.drawpic_core.ActiveMQConstants;
 import cse110team4.drawpic.drawpic_core.player.ClientData;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_core.protocol.CorrelationIDGenerator;
-import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketReceiver;
+import cse110team4.drawpic.drawpic_core.protocol.jms.JMSMessageListener;
 import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketSender;
 import cse110team4.drawpic.drawpic_core.protocol.packet.Packet;
+import cse110team4.drawpic.drawpic_core.protocol.packet.PacketDistributor;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketHandler;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketReply;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet03Response;
@@ -43,8 +44,8 @@ public class JMSServerConnection implements ServerConnection {
 	private Queue clientQueue;
 	
 	private JMSPacketSender out;
-	private JMSPacketReceiver in;
 	
+	private PacketDistributor packetDistributor;
 	private PacketHandler packetHandler;
 	
 	private ClientData clientData;
@@ -81,13 +82,14 @@ public class JMSServerConnection implements ServerConnection {
 			
 			// Prepare the packet sender
 			out = DesktopBeans.getContext().getBean("jmsPacketSender", JMSPacketSender.class);
-			out.setProducer(session.createProducer(clientQueue));
+			out.setProducer(session.createProducer(serverQueue));
 			out.setReplyTo(clientQueue);
 			
 			// Prepare the packet receiver
-			in = DesktopBeans.getContext().getBean("jmsPacketReceiver", JMSPacketReceiver.class);
-			session.createConsumer(clientQueue).setMessageListener(in);
-			in.addPacketHandler(packetHandler = new ClientPacketHandler());
+			session.createConsumer(clientQueue).setMessageListener(DesktopBeans.getContext().getBean(JMSClientMessageListener.class));
+			
+			packetDistributor = DesktopBeans.getContext().getBean(JMSClientMessageListener.class).getDistributor();
+			packetDistributor.addPacketHandler(packetHandler = DesktopBeans.getContext().getBean(ClientPacketHandler.class));
 		} catch (JMSException e) {
 			return "Failed to initialize ActiveMQ";
 		}
@@ -98,7 +100,7 @@ public class JMSServerConnection implements ServerConnection {
 		connectPacket.setCorrelationID(cID());
 		
 		// Prepare for a reply
-		PacketReply<Packet03Response> reply = new PacketReply<Packet03Response>(in, (byte) 0x03, connectPacket.getCorrelationID());
+		PacketReply<Packet03Response> reply = new PacketReply<Packet03Response>(packetDistributor, (byte) 0x03, connectPacket.getCorrelationID());
 		
 		// Send the packet
 		try {
@@ -115,7 +117,7 @@ public class JMSServerConnection implements ServerConnection {
 		} catch (ExecutionException e) {
 			return "Error while attempting to get response: " + e.getCause().getMessage();
 		} catch (TimeoutException e) {
-			return "Connection timed out after" + CONNECTION_TIMEOUT + " seconds";
+			return "Connection timed out after " + CONNECTION_TIMEOUT + " seconds";
 		}
 		
 		return null;
@@ -128,7 +130,7 @@ public class JMSServerConnection implements ServerConnection {
 		loginPacket.setCorrelationID(cID());
 		
 		// Prepare for the reply
-		PacketReply<Packet03Response> reply = new PacketReply<Packet03Response>(in, (byte) 0x03, loginPacket.getCorrelationID());
+		PacketReply<Packet03Response> reply = new PacketReply<Packet03Response>(packetDistributor, (byte) 0x03, loginPacket.getCorrelationID());
 		
 		// Send the login packet
 		try {
@@ -147,7 +149,7 @@ public class JMSServerConnection implements ServerConnection {
 				return loginResult.getFailReason();
 			}
 		} catch (TimeoutException e) {
-			return "Connection timed out after" + CONNECTION_TIMEOUT + " seconds";
+			return "Connection timed out after " + CONNECTION_TIMEOUT + " seconds";
 		} catch (InterruptedException e) {
 			return "Interrupted while waiting for response";
 		} catch (ExecutionException e) {
@@ -162,7 +164,7 @@ public class JMSServerConnection implements ServerConnection {
 		lobbyPacket.setCorrelationID(cID());
 		
 		// Prepare for the reply
-		PacketReply<Packet03Response> reply = new PacketReply<Packet03Response>(in, (byte) 0x03, lobbyPacket.getCorrelationID());
+		PacketReply<Packet03Response> reply = new PacketReply<Packet03Response>(packetDistributor, (byte) 0x03, lobbyPacket.getCorrelationID());
 		
 		// Send the packet
 		try {
@@ -181,7 +183,7 @@ public class JMSServerConnection implements ServerConnection {
 				return lobbyResult.getFailReason();
 			}
 		} catch (TimeoutException e) {
-			return "Connection timed out after" + CONNECTION_TIMEOUT + " seconds";
+			return "Connection timed out after " + CONNECTION_TIMEOUT + " seconds";
 		} catch (InterruptedException e) {
 			return "Interrupted while waiting for response";
 		} catch (ExecutionException e) {

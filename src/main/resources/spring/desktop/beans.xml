@@ -13,8 +13,18 @@
 
 	
 	<bean id="jmsServerConnection"
-		class="cse110team4.drawpic.drawpic_desktop.server.JMSServerConnection">
+		class="cse110team4.drawpic.drawpic_desktop.server.JMSServerConnection"
+		scope="singleton">
 		<constructor-arg ref="clientData"></constructor-arg>
 	</bean>
-	
+	<bean id="jmsClientMessageListener"
+		class="cse110team4.drawpic.drawpic_desktop.server.JMSClientMessageListener"
+		scope="singleton">
+		<constructor-arg ref="jmsStreamReader"></constructor-arg>
+		<constructor-arg ref="packetDistributor"></constructor-arg>
+	</bean>
+	<bean id="clientPacketHandler"
+		class="cse110team4.drawpic.drawpic_desktop.server.ClientPacketHandler"
+		scope="singleton">
+	</bean>
 </beans>
