@@ -284,6 +284,9 @@ public class JMSServerConnection implements ServerConnection {
 			if (lobbyResult.getSuccess()) {
 				// Set the lobby we're in
 				clientData.setLobby(lobby);
+			
+				// Add self to lobby
+				lobby.addPlayer(clientData.getUsername());
 				
 				// Send the event
 				DesktopBeans.getContext().getBean(EventDispatcher.class).call(new ClientLobbySetEvent(clientData));
