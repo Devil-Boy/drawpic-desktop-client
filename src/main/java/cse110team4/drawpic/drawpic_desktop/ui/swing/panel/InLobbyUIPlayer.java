@@ -73,7 +73,7 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView {
 		add(panel, BorderLayout.EAST);
 		
 		JPanel panel2 = new JPanel();
-		panel2.add(new LobbySettingsDisplay());
+		panel2.add(new LobbySettingsDisplayPlayer());
 		
 		JScrollPane settingsArea = new JScrollPane(panel2);
 		panel.add(settingsArea);
@@ -82,9 +82,6 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView {
 		JPanel buttonArea = new JPanel();
 		buttonArea.setOpaque(false);
 		add(buttonArea, BorderLayout.SOUTH);
-		
-		JButton btnStart = new JButton("Start");
-		buttonArea.add(btnStart);
 		
 		JButton leaveButton = new JButton("Leave");
 		buttonArea.add(leaveButton);
