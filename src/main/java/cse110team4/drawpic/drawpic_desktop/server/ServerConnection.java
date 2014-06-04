@@ -20,6 +20,12 @@ public interface ServerConnection {
 	ClientData getClientData();
 	
 	/**
+	 * Gets the polled lobby list from the server
+	 * @return The lobby list or null if server hasn't been successfull polled
+	 */
+	List<Lobby> getLobbyList();
+	
+	/**
 	 * This method handles the initial network connection
 	 * It should block until the connection is completed or times out
 	 * @return null if successful, otherwise the reason for failure
@@ -40,11 +46,10 @@ public interface ServerConnection {
 	String createLobby();
 	
 	/**
-	 * Fills the given list with the currently available lobbies
-	 * @param lobbies The list to fill
+	 * Obtains the lobby list from the server
 	 * @return null if lobby creation was successful, otherwise a reason for failure
 	 */
-	 String getLobbies(List<Lobby> lobbies);
+	 String pollLobbyList();
 	
 	/**
 	 * Attempts to join the selected lobby

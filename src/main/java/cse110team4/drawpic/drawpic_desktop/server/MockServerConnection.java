@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import cse110team4.drawpic.drawpic_core.player.ClientData;
-import cse110team4.drawpic.drawpic_core.player.FourPlayerLobby;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
@@ -20,6 +19,7 @@ import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
  */
 public class MockServerConnection implements ServerConnection {
 	ClientData clientData;
+	List<Lobby> lobbyList;
 	
 	String[] names = { "Bob", "Rick", "Lobber", "Ashley", "Jonotan",
 			"Ricky", "Parser", "Sean", "Parsley", "Ellis", "Jo",
@@ -32,6 +32,11 @@ public class MockServerConnection implements ServerConnection {
 	@Override
 	public ClientData getClientData() {
 		return clientData;
+	}
+	
+	@Override
+	public List<Lobby> getLobbyList() {
+		return lobbyList;
 	}
 
 	@Override
@@ -82,14 +87,14 @@ public class MockServerConnection implements ServerConnection {
 	}
 
 	@Override
-	public String getLobbies(List<Lobby> openLobbies) {
+	public String pollLobbyList() {
 		// Choose the amount to send
 		int size = random.nextInt(mockLobbies.size());
 		
 		// Send random lobbies
 		List<Lobby> tempList = new ArrayList<Lobby>(mockLobbies);
 		for (int i=0; i < size; i++) {
-			openLobbies.add(tempList.remove(random.nextInt(tempList.size())));
+			lobbyList.add(tempList.remove(random.nextInt(tempList.size())));
 		}
 		
 		// Block for a bit
@@ -122,7 +127,4 @@ public class MockServerConnection implements ServerConnection {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-
 }
