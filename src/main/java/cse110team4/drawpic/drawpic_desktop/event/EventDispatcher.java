@@ -1,9 +1,9 @@
 package cse110team4.drawpic.drawpic_desktop.event;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This handles the registering and notifying of event listeners
@@ -63,7 +63,7 @@ public class EventDispatcher {
 			List<L> listeners = eventListeners.get(eventClass);
 			
 			if (listeners == null) {
-				listeners = new ArrayList<L>();
+				listeners = new CopyOnWriteArrayList<L>();
 				eventListeners.put(eventClass, listeners);
 			}
 			
@@ -78,7 +78,7 @@ public class EventDispatcher {
 	public <L> void call(Event<L> event) {
 		Class<Event<L>> eventClass = (Class<Event<L>>) event.getClass();
 		
-		for (L listener : new ArrayList<L>(listenersOf(eventClass))) {
+		for (L listener : listenersOf(eventClass)) {
 			event.notify(listener);
 		}
 	}
