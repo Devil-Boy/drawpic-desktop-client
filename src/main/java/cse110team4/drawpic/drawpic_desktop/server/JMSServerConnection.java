@@ -12,6 +12,7 @@ import javax.jms.Session;
 
 import cse110team4.drawpic.drawpic_core.ActiveMQConstants;
 import cse110team4.drawpic.drawpic_core.CloseHook;
+import cse110team4.drawpic.drawpic_core.gamesession.GamePhase;
 import cse110team4.drawpic.drawpic_core.player.ClientData;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_core.player.LobbySettings;
@@ -22,6 +23,7 @@ import cse110team4.drawpic.drawpic_core.protocol.packet.Packet;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketDistributor;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketReply;
 import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet0ELobbySettings;
+import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet0FStartGame;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet03Response;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet09LobbyList;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet01Connect;
@@ -35,6 +37,7 @@ import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.gamephase.PhaseStartEvent;
 import cse110team4.drawpic.drawpic_desktop.event.lobby.LobbySettingsChangedEvent;
 import cse110team4.drawpic.drawpic_desktop.event.server.ServerLobbyListSetEvent;
 
@@ -353,6 +356,42 @@ public class JMSServerConnection implements ServerConnection {
 				return null;
 			} else {
 				return lobbyResult.getFailReason();
+			}
+		} catch (TimeoutException e) {
+			return "Connection timed out after " + CONNECTION_TIMEOUT + " seconds";
+		} catch (InterruptedException e) {
+			return "Interrupted while waiting for response";
+		} catch (ExecutionException e) {
+			return "Error while attempting to get response: " + e.getCause().getMessage();
+		}
+	}
+
+	@Override
+	public String startGame() {
+		// Prepare packet
+		Packet gamePacket = new Packet0FStartGame();
+		gamePacket.setCorrelationID(cID());
+		
+		// Prepare for the reply
+		PacketReply<Packet03Response> reply = new PacketReply<Packet03Response>(packetDistributor, (byte) 0x03, gamePacket.getCorrelationID());
+		
+		// Send the packet
+		try {
+			out.sendPacket(gamePacket);
+		} catch (Exception e) {
+			return "Could not send packet to start game";
+		}
+		
+		// Wait for the reply
+		try {
+			Packet03Response gameResult = reply.get(CONNECTION_TIMEOUT, TimeUnit.SECONDS);
+			if (gameResult.getSuccess()) {
+				// Send the event
+				DesktopBeans.getContext().getBean(EventDispatcher.class).call(new PhaseStartEvent(GamePhase.DRAW_PHASE));
+				
+				return null;
+			} else {
+				return gameResult.getFailReason();
 			}
 		} catch (TimeoutException e) {
 			return "Connection timed out after " + CONNECTION_TIMEOUT + " seconds";

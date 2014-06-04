@@ -1,13 +1,16 @@
 package cse110team4.drawpic.drawpic_desktop.server;
 
+import cse110team4.drawpic.drawpic_core.gamesession.GamePhase;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_core.protocol.packet.Packet;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketHandler;
 import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet0ELobbySettings;
+import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet0FStartGame;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet0BPlayerJoined;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet0DPlayerLeft;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
+import cse110team4.drawpic.drawpic_desktop.event.gamephase.PhaseStartEvent;
 import cse110team4.drawpic.drawpic_desktop.event.lobby.LobbySettingsChangedEvent;
 import cse110team4.drawpic.drawpic_desktop.event.lobby.PlayerJoinedLobbyEvent;
 import cse110team4.drawpic.drawpic_desktop.event.lobby.PlayerLeftLobbyEvent;
@@ -26,6 +29,8 @@ public class ClientPacketHandler implements PacketHandler {
 			handlePlayerLeft((Packet0DPlayerLeft) packet);
 		} else if (packetID == 0x0E) {
 			handleLobbySettingsChanges((Packet0ELobbySettings) packet);
+		} else if (packetID == 0x0F) {
+			handleGameStart((Packet0FStartGame) packet);
 		}
 	}
 
@@ -58,5 +63,10 @@ public class ClientPacketHandler implements PacketHandler {
 		
 		// Send the event
 		DesktopBeans.getContext().getBean(EventDispatcher.class).call(new LobbySettingsChangedEvent(lobby));
+	}
+	
+	public void handleGameStart(Packet0FStartGame packet) {
+		// Send the event
+		DesktopBeans.getContext().getBean(EventDispatcher.class).call(new PhaseStartEvent(GamePhase.DRAW_PHASE));
 	}
 }
