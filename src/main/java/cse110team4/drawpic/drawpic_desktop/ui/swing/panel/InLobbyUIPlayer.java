@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_core.player.Lobby;
+import cse110team4.drawpic.drawpic_core.player.NormalLobbySettings;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
@@ -51,6 +52,7 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientLi
 
 	private IInLobbyController controller;
 	
+	private JPanel panel2;
 	private JButton leaveButton;
 	
 	public InLobbyUIPlayer(EventDispatcher dispatch) {
@@ -92,7 +94,7 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientLi
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.EAST);
 		
-		JPanel panel2 = new JPanel();
+		panel2 = new JPanel();
 		
 		JScrollPane settingsArea = new JScrollPane(panel2);
 		panel.add(settingsArea);
@@ -144,6 +146,12 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientLi
 		refreshPlayers();
 	}
 
+	private void refreshSettings(){
+		panel2.removeAll();
+		panel2.add(new LobbySettingsDisplay((NormalLobbySettings) DesktopBeans.getContext().getBean(ServerConnection.class).getClientData().getLobby().getSettings()));
+	
+	}
+	
 	@Override
 	public void playerJoinedLobby(PlayerJoinedLobbyEvent event) {
 		// TODO Auto-generated method stub
