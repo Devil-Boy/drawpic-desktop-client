@@ -144,12 +144,14 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientLi
 	public void lobbySet(ClientLobbySetEvent event) {
 		// TODO Auto-generated method stub
 		refreshPlayers();
+		refreshSettings();
 	}
 
 	private void refreshSettings(){
 		panel2.removeAll();
-		panel2.add(new LobbySettingsDisplay((NormalLobbySettings) DesktopBeans.getContext().getBean(ServerConnection.class).getClientData().getLobby().getSettings()));
+		panel2.add(new LobbySettingsDisplayPlayer((NormalLobbySettings) DesktopBeans.getContext().getBean(ServerConnection.class).getClientData().getLobby().getSettings()));
 	
+		revalidate();
 	}
 	
 	@Override
@@ -167,8 +169,7 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientLi
 
 	@Override
 	public void settingsChanged(LobbySettingsChangedEvent event) {
-		// TODO Auto-generated method stub
-		
+		refreshSettings();
 	}
 }
 
