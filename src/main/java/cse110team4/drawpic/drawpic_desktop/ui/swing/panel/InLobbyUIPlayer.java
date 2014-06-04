@@ -1,4 +1,4 @@
-ppackage cse110team4.drawpic.drawpic_desktop.ui.swing.panel;
+package cse110team4.drawpic.drawpic_desktop.ui.swing.panel;
 
 import java.awt.Color;
 
@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
+import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyController;
+import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyView;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.Logo;
 
 import java.awt.BorderLayout;
@@ -22,7 +24,7 @@ import javax.swing.BoxLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 
-public class InLobbyUIPlayer extends SwingView {
+public class InLobbyUIPlayer extends SwingView implements IInLobbyView {
 
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;
@@ -94,6 +96,12 @@ public class InLobbyUIPlayer extends SwingView {
 		
 		// Initialize the button-to-player database
 		buttonMap = new HashMap<Object, String>();
+	}
+
+	@Override
+	public void setController(IInLobbyController controller) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 
