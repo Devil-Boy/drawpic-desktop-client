@@ -30,6 +30,7 @@ import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet06Disc
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet07CreateLobby;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet08GetLobbies;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet0AJoinLobby;
+import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet0CLeaveLobby;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
@@ -306,7 +307,20 @@ public class JMSServerConnection implements ServerConnection {
 
 	@Override
 	public String leaveLobby() {
-		// TODO Auto-generated method stub
+		// Prepare packet
+		Packet lobbyPacket = new Packet0CLeaveLobby();
+		lobbyPacket.setCorrelationID(cID());
+		
+		// Send the packet
+		try {
+			out.sendPacket(lobbyPacket);
+		} catch (Exception e) {
+			return "Could not send packet to leave lobby";
+		}
+		
+		// Remove self from lobby
+		clientData.setLobby(null);
+		
 		return null;
 	}
 
