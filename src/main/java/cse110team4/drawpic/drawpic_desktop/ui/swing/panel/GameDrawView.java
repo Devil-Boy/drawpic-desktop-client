@@ -3,29 +3,19 @@ package cse110team4.drawpic.drawpic_desktop.ui.swing.panel;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Label;
 
-import javax.swing.JMenuBar;
 import javax.swing.JLabel;
-
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 import javax.swing.JColorChooser;
 
 import java.awt.ScrollPane;
 
-import javax.swing.JSeparator;
-
 import java.awt.GridLayout;
 
 import javax.swing.JSlider;
 import javax.swing.JRadioButton;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
 
 import cse110team4.drawpic.drawpic_desktop.ui.IGameDrawController;
 import cse110team4.drawpic.drawpic_desktop.ui.IGameDrawView;
@@ -33,14 +23,9 @@ import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.drawing.CanvasView;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.drawing.DrawProcessor;
 
 import java.awt.FlowLayout;
-import java.awt.CardLayout;
 
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.ButtonGroup;
 import javax.swing.border.EtchedBorder;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 
 public class GameDrawView extends SwingView implements IGameDrawView {
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
