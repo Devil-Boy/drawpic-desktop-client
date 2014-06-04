@@ -117,6 +117,7 @@ public class JMSServerConnection implements ServerConnection {
 				@Override
 				public void run() {
 					try {
+						System.out.println("Diconnecting from server...");
 						out.sendPacket(new Packet06Disconnect());
 					} catch (Exception e) {
 						(new Exception("Couldn't send disconnect packet")).printStackTrace();
