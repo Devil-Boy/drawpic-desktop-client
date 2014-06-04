@@ -38,6 +38,9 @@ import java.awt.CardLayout;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.ButtonGroup;
 import javax.swing.border.EtchedBorder;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public class GameDrawView extends SwingView implements IGameDrawView {
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
@@ -66,14 +69,10 @@ public class GameDrawView extends SwingView implements IGameDrawView {
 		
 		JPanel panel_1 = new JPanel();
 		add(panel_1, BorderLayout.EAST);
-		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("234px"),},
-			new RowSpec[] {
-				RowSpec.decode("75px"),
-				RowSpec.decode("201px"),}));
+		panel_1.setLayout(new GridLayout(3, 1, 0, 0));
 		
 		JPanel panel_3 = new JPanel();
-		panel_1.add(panel_3, "1, 1, left, fill");
+		panel_1.add(panel_3);
 		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JPanel panel_4 = new JPanel();
@@ -88,7 +87,7 @@ public class GameDrawView extends SwingView implements IGameDrawView {
 		panel_4.add(rdbtnEraser);
 		
 		JPanel panel_2 = new JPanel();
-		panel_3.add(panel_2);
+		panel_1.add(panel_2);
 		
 		JLabel lblNewLabel = new JLabel("Size:");
 		panel_2.add(lblNewLabel);
@@ -100,7 +99,7 @@ public class GameDrawView extends SwingView implements IGameDrawView {
 		//panel_1.add(colorChooser);
 		
 		ScrollPane scrollPane = new ScrollPane();
-		panel_1.add(scrollPane, "1, 2, fill, fill");
+		panel_1.add(scrollPane);
 		scrollPane.add(colorChooser);
 
 	}
