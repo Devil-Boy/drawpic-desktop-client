@@ -65,7 +65,12 @@ public class DrawPicApp implements ClientListener{
 	@Override
 	public void lobbySet(ClientLobbySetEvent event) {
 		if(event.getLobby() != null){
-			this.setCurrentPhase(ClientPhase.IN_LOBBY);
+			if (event.getLobby().getHost() == connection.getClientData().getUsername()) {
+				this.setCurrentPhase(ClientPhase.IN_LOBBY_HOST);
+			}
+			else {
+				this.setCurrentPhase(ClientPhase.IN_LOBBY_PLAYER);
+			}
 		}
 		
 	}

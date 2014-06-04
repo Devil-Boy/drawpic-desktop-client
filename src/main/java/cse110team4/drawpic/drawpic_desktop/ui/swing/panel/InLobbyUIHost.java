@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
+import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyController;
+import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyView;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.Logo;
 
 import java.awt.BorderLayout;
@@ -22,7 +24,7 @@ import javax.swing.BoxLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 
-public class InLobbyUIHost extends SwingView {
+public class InLobbyUIHost extends SwingView implements IInLobbyView {
 
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;
@@ -34,7 +36,7 @@ public class InLobbyUIHost extends SwingView {
 	
 	private Map<Object, String> buttonMap;
 
-	public InLobbyUIHost(ServerConnection server) {
+	public InLobbyUIHost() {
 		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Try getting the logo
@@ -94,5 +96,11 @@ public class InLobbyUIHost extends SwingView {
 		
 		// Initialize the button-to-player database
 		buttonMap = new HashMap<Object, String>();
+	}
+
+	@Override
+	public void setController(IInLobbyController controller) {
+		// TODO Auto-generated method stub
+		
 	}
 }
