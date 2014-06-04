@@ -2,6 +2,9 @@ package cse110team4.drawpic.drawpic_desktop.server;
 
 import java.util.List;
 
+import cse110team4.drawpic.drawpic_core.drawing.Canvas;
+import cse110team4.drawpic.drawpic_core.drawing.Step;
+import cse110team4.drawpic.drawpic_core.drawing.Tool;
 import cse110team4.drawpic.drawpic_core.player.ClientData;
 import cse110team4.drawpic.drawpic_core.player.GameData;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
@@ -16,6 +19,12 @@ import cse110team4.drawpic.drawpic_core.player.LobbySettings;
 public interface ServerConnection {
 	
 	/**
+	 * Gets the polled lobby list from the server
+	 * @return The lobby list or null if server hasn't been successful polled
+	 */
+	List<Lobby> getLobbyList();
+	
+	/**
 	 * Gets the object storing this client's data
 	 * @return The ClientData object
 	 */
@@ -28,10 +37,16 @@ public interface ServerConnection {
 	GameData getGameData();
 	
 	/**
-	 * Gets the polled lobby list from the server
-	 * @return The lobby list or null if server hasn't been successful polled
+	 * Gets the canvas
+	 * @return The canvas
 	 */
-	List<Lobby> getLobbyList();
+	Canvas getCanvas();
+	
+	/**
+	 * Gets the current tool
+	 * @return THe tool
+	 */
+	Tool getTool();
 	
 	/**
 	 * This method handles the initial network connection
@@ -86,4 +101,6 @@ public interface ServerConnection {
 	 * @return null if successful, otherwise a reason for failure
 	 */
 	String startGame();
+
+	String addStep(Step step);
 }

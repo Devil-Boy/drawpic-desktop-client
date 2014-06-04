@@ -4,11 +4,15 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
+import cse110team4.drawpic.drawpic_core.gamesession.GamePhase;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.game.GameJudgeSetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.game.GamePhaseSetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.listener.ClientListener;
+import cse110team4.drawpic.drawpic_desktop.event.listener.GameListener;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 
 /**
@@ -17,7 +21,7 @@ import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
  * @author Devil Boy (Kervin Sam)
  *
  */
-public class DrawPicApp implements ClientListener{
+public class DrawPicApp implements ClientListener, GameListener {
 	
 	ServerConnection connection;
 	
@@ -34,6 +38,7 @@ public class DrawPicApp implements ClientListener{
 	private void registerEvents() {
 		DesktopBeans.getContext().getBean(EventDispatcher.class).register(ClientUsernameSetEvent.class, this);
 		DesktopBeans.getContext().getBean(EventDispatcher.class).register(ClientLobbySetEvent.class, this);
+		DesktopBeans.getContext().getBean(EventDispatcher.class).register(GamePhaseSetEvent.class, this);
 	}
 	
 	public void start() {
@@ -86,5 +91,17 @@ public class DrawPicApp implements ClientListener{
 
 	public void setCurrentPhase(ClientPhase currentPhase) {
 		displayer.viewPhase(this.currentPhase = currentPhase);
+	}
+
+	@Override
+	public void phaseSet(GamePhaseSetEvent event) {
+		GamePhase phase = event.getPhase();
+		if (phase == GamePhase.DRAW_PHASE) {
+			setCurrentPhase(ClientPhase.GAME_DRAW);
+		}
+	}
+
+	@Override
+	public void judgeSet(GameJudgeSetEvent event) {
 	}
 }

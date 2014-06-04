@@ -81,4 +81,12 @@
 		class="cse110team4.drawpic.drawpic_desktop.ui.swing.panel.InLobbyUIPlayer">
 	<constructor-arg ref="eventDispatcher"></constructor-arg>
 	</bean>
+	<bean id="swingGameDrawView"
+		class="cse110team4.drawpic.drawpic_desktop.ui.swing.panel.GameDrawView">
+	</bean>
+	<bean id="swingGameDrawController"
+		class="cse110team4.drawpic.drawpic_desktop.ui.GameDrawController">
+	<constructor-arg ref="jmsServerConnection"></constructor-arg>
+	<constructor-arg ref="swingGameDrawView"></constructor-arg>
+	</bean>
 </beans>

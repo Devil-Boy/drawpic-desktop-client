@@ -2,19 +2,13 @@ package cse110team4.drawpic.drawpic_desktop.ui;
 
 import java.awt.Color;
 
-import cse110team4.drawpic.drawpic_core.drawing.Location;
+import cse110team4.drawpic.drawpic_core.drawing.Step;
 
 public interface IGameDrawController {
 
-	/**
-	 * used to store and transfer location to server
-	 * @param location
-	 */
-	public void markLocation(Location location);
+	public void addStep(Step step);
 	
-	public void changeColor(Color color);
+	public void changeToPen(Color color, int size)
 	
-	public void erase ();
-	
-	public void changeSize (int size);
+	public void erase();
 }

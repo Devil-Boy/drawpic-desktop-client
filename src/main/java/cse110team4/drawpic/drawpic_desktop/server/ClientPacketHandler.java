@@ -11,6 +11,7 @@ import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet0FSt
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet0BPlayerJoined;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet0DPlayerLeft;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet10SetJudge;
+import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet12GamePhase;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet04KickLobby;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
@@ -37,10 +38,10 @@ public class ClientPacketHandler implements PacketHandler {
 			handlePlayerLeft((Packet0DPlayerLeft) packet);
 		} else if (packetID == 0x0E) {
 			handleLobbySettingsChanges((Packet0ELobbySettings) packet);
-		} else if (packetID == 0x0F) {
-			handleGameStart((Packet0FStartGame) packet);
 		} else if (packetID == 0x10) {
 			handleJudgeSet((Packet10SetJudge) packet);
+		} else if (packetID == 0x12) {
+			handleGamePhase((Packet12GamePhase) packet);
 		}
 	}
 	
@@ -82,15 +83,6 @@ public class ClientPacketHandler implements PacketHandler {
 		DesktopBeans.getContext().getBean(EventDispatcher.class).call(new LobbySettingsChangedEvent(lobby));
 	}
 	
-	public void handleGameStart(Packet0FStartGame packet) {
-		// Set the game phase
-		GameData gameData = DesktopBeans.getContext().getBean(JMSServerConnection.class).getGameData();
-		gameData.setPhase(GamePhase.DRAW_PHASE);
-		
-		// Send the event
-		DesktopBeans.getContext().getBean(EventDispatcher.class).call(new GamePhaseSetEvent(gameData));
-	}
-	
 	public void handleJudgeSet(Packet10SetJudge packet) {
 		// Set the game judge
 		GameData gameData = DesktopBeans.getContext().getBean(JMSServerConnection.class).getGameData();
@@ -98,5 +90,14 @@ public class ClientPacketHandler implements PacketHandler {
 		
 		// Send the event
 		DesktopBeans.getContext().getBean(EventDispatcher.class).call(new GameJudgeSetEvent(gameData));
+	}
+	
+	public void handleGamePhase(Packet12GamePhase packet) {
+		// Set the game phase
+		GameData gameData = DesktopBeans.getContext().getBean(JMSServerConnection.class).getGameData();
+		gameData.setPhase(packet.getPhase());
+		
+		// Send the event
+		DesktopBeans.getContext().getBean(EventDispatcher.class).call(new GamePhaseSetEvent(gameData));
 	}
 }

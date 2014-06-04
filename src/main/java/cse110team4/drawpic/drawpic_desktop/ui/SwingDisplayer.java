@@ -14,6 +14,7 @@ import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.server.ServerLobbyListSetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
+import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.GameDrawView;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.InLobbyUIHost;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.InLobbyUIPlayer;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyBrowserUI;
@@ -98,6 +99,10 @@ public class SwingDisplayer implements UIDisplayer {
 			setUI(inLobbyUIPlayer);
 			break;
 		case GAME_DRAW:
+			GameDrawView gameDrawView = DesktopBeans.getContext().getBean(GameDrawView.class);
+			gameDrawView.setController(DesktopBeans.getContext().getBean("swingGameDrawController", GameDrawController.class));
+			
+			setUI(gameDrawView);
 			break;
 		case GAME_JUDGE:
 			break;

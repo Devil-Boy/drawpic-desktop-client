@@ -12,6 +12,9 @@ import javax.jms.Session;
 
 import cse110team4.drawpic.drawpic_core.ActiveMQConstants;
 import cse110team4.drawpic.drawpic_core.CloseHook;
+import cse110team4.drawpic.drawpic_core.drawing.Canvas;
+import cse110team4.drawpic.drawpic_core.drawing.Step;
+import cse110team4.drawpic.drawpic_core.drawing.Tool;
 import cse110team4.drawpic.drawpic_core.gamesession.GamePhase;
 import cse110team4.drawpic.drawpic_core.player.ClientData;
 import cse110team4.drawpic.drawpic_core.player.GameData;
@@ -25,6 +28,7 @@ import cse110team4.drawpic.drawpic_core.protocol.packet.PacketDistributor;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketReply;
 import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet0ELobbySettings;
 import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet0FStartGame;
+import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet13SingleStep;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet03Response;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet09LobbyList;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet01Connect;
@@ -67,9 +71,17 @@ public class JMSServerConnection implements ServerConnection {
 	private ClientData clientData;
 	private GameData gameData;
 	
+	private Canvas canvas;
+	private Tool tool;
+	
 	public JMSServerConnection(ClientData clientData, GameData gameData) {
 		this.clientData = clientData;
 		this.gameData = gameData;
+	}
+	
+	@Override
+	public List<Lobby> getLobbyList() {
+		return lobbyList;
 	}
 	
 	@Override
@@ -83,8 +95,13 @@ public class JMSServerConnection implements ServerConnection {
 	}
 	
 	@Override
-	public List<Lobby> getLobbyList() {
-		return lobbyList;
+	public Canvas getCanvas() {
+		return canvas;
+	}
+	
+	@Override
+	public Tool getTool() {
+		return tool;
 	}
 	
 	private String cID() {
@@ -406,6 +423,24 @@ public class JMSServerConnection implements ServerConnection {
 		} catch (ExecutionException e) {
 			return "Error while attempting to get response: " + e.getCause().getMessage();
 		}
+	}
+
+	@Override
+	public String addStep(Step step) {
+		// Add to our own list
+		canvas.addStep(step);
+		
+		// Prepare packet
+		Packet gamePacket = new Packet13SingleStep(step);
+		
+		// Send the packet
+		try {
+			out.sendPacket(gamePacket);
+		} catch (Exception e) {
+			return "Could not send packet for a single step";
+		}
+		
+		return null;
 	}
 
 }
