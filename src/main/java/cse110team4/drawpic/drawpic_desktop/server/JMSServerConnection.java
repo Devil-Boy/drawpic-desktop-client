@@ -213,7 +213,6 @@ public class JMSServerConnection implements ServerConnection {
 				
 				// Send the event
 				DesktopBeans.getContext().getBean(EventDispatcher.class).call(new ClientLobbySetEvent(clientData));
-				
 				return null;
 			} else {
 				return lobbyResult.getFailReason();

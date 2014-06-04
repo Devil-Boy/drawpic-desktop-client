@@ -52,5 +52,9 @@ public class InLobbyController implements IInLobbyController {
 	public void changeSettingDrawTime(int time) {
 
 	}
+	
+	public String[] getPlayers() {
+		return connection.getClientData().getLobby().getPlayers();
+	}
 
 }

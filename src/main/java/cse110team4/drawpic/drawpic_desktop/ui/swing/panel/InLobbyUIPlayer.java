@@ -5,6 +5,14 @@ import java.awt.Color;
 import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_core.player.Lobby;
+import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
+import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.listener.ClientListener;
+import cse110team4.drawpic.drawpic_desktop.event.lobby.LobbySettingsChangedEvent;
+import cse110team4.drawpic.drawpic_desktop.event.lobby.PlayerJoinedLobbyEvent;
+import cse110team4.drawpic.drawpic_desktop.event.lobby.PlayerLeftLobbyEvent;
+import cse110team4.drawpic.drawpic_desktop.server.JMSServerConnection;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyController;
 import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyView;
@@ -15,6 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 
@@ -24,7 +33,7 @@ import javax.swing.BoxLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 
-public class InLobbyUIPlayer extends SwingView implements IInLobbyView {
+public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientListener {
 
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;
@@ -36,6 +45,8 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView {
 	
 	private Map<Object, String> buttonMap;
 
+	private IInLobbyController controller;
+	
 	public InLobbyUIPlayer() {
 		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
@@ -67,8 +78,6 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView {
 		mainArea.add(playerListArea, BorderLayout.CENTER);
 		playerListArea.setLayout(new GridLayout(4, 1, 0, 0));
 		
-		refreshPlayers();
-		
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.EAST);
 		
@@ -88,9 +97,14 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView {
 	}
 	
 	private void refreshPlayers() {
+		System.err.println("REFRESH CALLED");
 		// Empty the player list
 		playerListArea.removeAll();
-		
+		ServerConnection connection = DesktopBeans.getContext().getBean(JMSServerConnection.class);
+		for (String player : connection.getClientData().getLobby().getPlayers()) {
+			JLabel playerLabel = new JLabel(player);
+			playerListArea.add(playerLabel);
+		}
 		// Initialize the button-to-player database
 		buttonMap = new HashMap<Object, String>();
 	}
@@ -98,7 +112,19 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView {
 	@Override
 	public void setController(IInLobbyController controller) {
 		// TODO Auto-generated method stub
+		this.controller = controller;
+	}
+
+	@Override
+	public void usernameSet(ClientUsernameSetEvent event) {
+		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void lobbySet(ClientLobbySetEvent event) {
+		// TODO Auto-generated method stub
+		refreshPlayers();
 	}
 }
 
