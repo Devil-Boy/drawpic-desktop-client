@@ -22,7 +22,7 @@ public interface ServerConnection {
 	
 	/**
 	 * Gets the polled lobby list from the server
-	 * @return The lobby list or null if server hasn't been successfull polled
+	 * @return The lobby list or null if server hasn't been successful polled
 	 */
 	List<Lobby> getLobbyList();
 	
