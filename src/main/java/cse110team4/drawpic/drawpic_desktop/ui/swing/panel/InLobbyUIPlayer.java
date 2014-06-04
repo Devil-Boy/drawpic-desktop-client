@@ -156,13 +156,11 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientLi
 	
 	@Override
 	public void playerJoinedLobby(PlayerJoinedLobbyEvent event) {
-		// TODO Auto-generated method stub
 		refreshPlayers();
 	}
 
 	@Override
 	public void playerLeftLobby(PlayerLeftLobbyEvent event) {
-		// TODO Auto-generated method stub
 		System.err.println("PLAYER LEFT LOBBY!");
 		refreshPlayers();
 	}

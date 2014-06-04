@@ -88,11 +88,13 @@ public class SwingDisplayer implements UIDisplayer {
 		case IN_LOBBY_HOST:
 			InLobbyUIHost inLobbyUIHost = DesktopBeans.getContext().getBean(InLobbyUIHost.class);
 			inLobbyUIHost.setController(DesktopBeans.getContext().getBean("swingInLobbyControllerHost", InLobbyController.class));
+			inLobbyUIHost.refreshSettings();
 			setUI(inLobbyUIHost);
 			break;
 		case IN_LOBBY_PLAYER:
 			InLobbyUIPlayer inLobbyUIPlayer = DesktopBeans.getContext().getBean(InLobbyUIPlayer.class);
 			inLobbyUIPlayer.setController(DesktopBeans.getContext().getBean("swingInLobbyControllerPlayer", InLobbyController.class));
+			
 			setUI(inLobbyUIPlayer);
 			break;
 		case GAME_DRAW:

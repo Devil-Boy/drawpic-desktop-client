@@ -57,6 +57,7 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientList
 	
 	private JButton leaveButton;
 	private JButton startButton;
+	private JScrollPane settingsArea;
 	
 	public InLobbyUIHost(EventDispatcher dispatch) {
 		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
@@ -99,7 +100,7 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientList
 		
 		panel2 = new JPanel();
 		
-		JScrollPane settingsArea = new JScrollPane(panel2);
+		settingsArea = new JScrollPane(panel2);
 		panel.add(settingsArea);
 		
 		
@@ -144,6 +145,7 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientList
 				controller.startGame();
 			}
 		});
+		
 	}
 
 	@Override
@@ -156,12 +158,11 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientList
 	public void lobbySet(ClientLobbySetEvent event) {
 		// TODO Auto-generated method stub
 		refreshPlayers();
-		refreshSettings();
 	}
 	
-	private void refreshSettings(){
+	public void refreshSettings(){
 		panel2.removeAll();
-		panel2.add(new LobbySettingsDisplay((NormalLobbySettings) DesktopBeans.getContext().getBean(ServerConnection.class).getClientData().getLobby().getSettings()));
+		panel2.add(new LobbySettingsDisplay((NormalLobbySettings) DesktopBeans.getContext().getBean(ServerConnection.class).getClientData().getLobby().getSettings(), this.controller));
 	
 		revalidate();
 	}
@@ -180,7 +181,7 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientList
 
 	@Override
 	public void settingsChanged(LobbySettingsChangedEvent event) {
-		System.err.println("They changed");
+		System.err.println("SETTINGS CHANGED");
 		refreshSettings();
 	}
 }
