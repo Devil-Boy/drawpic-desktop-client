@@ -33,8 +33,10 @@ public class EventDispatcher {
 	public <L> void register(Class<? extends Event<L>> eventClass, L listener) {
 		List<L> listeners = listenersOf(eventClass);
 		
-		if (!listeners.contains(listener)) {
-			listeners.add(listener);
+		synchronized (listeners) {
+			if (!listeners.contains(listener)) {
+				listeners.add(listener);
+			}
 		}
 	}
 	
@@ -46,7 +48,9 @@ public class EventDispatcher {
 	public <L> void unregister(Class<? extends Event<L>> eventClass, L listener) {
 		List<L> listeners = listenersOf(eventClass);
 		
-		listeners.remove(listener);
+		synchronized (listeners) {
+			listeners.remove(listener);
+		}
 	}
 	
 	/**
@@ -55,14 +59,16 @@ public class EventDispatcher {
 	 * @return A list containing listeners
 	 */
 	private <L> List<L> listenersOf(Class<? extends Event<L>> eventClass) {
-		List<L> listeners = eventListeners.get(eventClass);
-		
-		if (listeners == null) {
-			listeners = new ArrayList<L>();
-			eventListeners.put(eventClass, listeners);
+		synchronized (eventListeners) {
+			List<L> listeners = eventListeners.get(eventClass);
+			
+			if (listeners == null) {
+				listeners = new ArrayList<L>();
+				eventListeners.put(eventClass, listeners);
+			}
+			
+			return listeners;
 		}
-		
-		return listeners;
 	}
 	
 	/**
