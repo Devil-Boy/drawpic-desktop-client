@@ -4,54 +4,48 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 
 import cse110team4.drawpic.drawpic_core.player.Lobby;
-import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
+import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
+import cse110team4.drawpic.drawpic_desktop.event.listener.ServerListener;
+import cse110team4.drawpic.drawpic_desktop.event.server.ServerLobbyListSetEvent;
+import cse110team4.drawpic.drawpic_desktop.ui.ILobbyBrowsingController;
+import cse110team4.drawpic.drawpic_desktop.ui.ILobbyBrowsingView;
 
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import java.awt.ScrollPane;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.awt.GridLayout;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
-import javax.swing.BoxLayout;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class LobbyBrowserUI extends SwingView {
+public class LobbyBrowserUI extends SwingView implements ILobbyBrowsingView, ServerListener {
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;
 	private static final int PREFERRED_HEIGHT = 300;
 	
 	private boolean block = true;
 	
+	private ILobbyBrowsingController controller;
+	
 	Lobby joinedLobby;
 	
-	List<Lobby> lobbies;
-	Map<Object, Lobby> buttonMap;
 	JPanel lobbyListArea;
+	private JButton backButton;
+	private JButton refreshButton;
 	
-	public LobbyBrowserUI(ServerConnection server) {
+	public LobbyBrowserUI(EventDispatcher dispatcher) {
 		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
+
+		dispatcher.register(ServerLobbyListSetEvent.class, this);
 		
 		// Add all the content
 		addContent();
-	}
-	
-	private void getLobbies() {
-		lobbies = new ArrayList<Lobby>();
-		
-		for (String host : server.openLobbies()) {
-			lobbies.add(server.getLobby(host));
-		}
 	}
 
 	private void addContent() {
@@ -65,8 +59,6 @@ public class LobbyBrowserUI extends SwingView {
 		
 		lobbyListArea = new JPanel();
 		
-		refreshLobbies();
-		
 		JScrollPane scrollPane = new JScrollPane(lobbyListArea);
 		panel.add(scrollPane);
 		
@@ -74,56 +66,21 @@ public class LobbyBrowserUI extends SwingView {
 		buttonArea.setOpaque(false);
 		add(buttonArea, BorderLayout.SOUTH);
 		
-		JButton backButton = new JButton("Back");
+		backButton = new JButton("Back");
 		buttonArea.add(backButton);
 		
-		JButton refreshButton = new JButton("Refresh");
+		refreshButton = new JButton("Refresh");
 		buttonArea.add(refreshButton);
-		
-		// Listeners
-		backButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				unblock();
-			}
-		});
-		
-		refreshButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				refreshLobbies();
-			}
-		});
 	}
 	
-	private void refreshLobbies() {
+	@Override
+	public void lobbyListSet(ServerLobbyListSetEvent event) {
+		displayLobbies(event.getLobbyList());
+	}
+	
+	private void displayLobbies(List<Lobby> lobbies) {
 		// Empty the container
 		lobbyListArea.removeAll();
-		
-		// Obtain the lobby list from the server
-		getLobbies();
-		
-		// Initialize the button-to-lobby database
-		buttonMap = new HashMap<Object, Lobby>();
-		
-		// Create the action listener
-		ActionListener buttonListener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Get the lobby they chose
-				Lobby chosenLobby = buttonMap.get(e.getSource());
-				
-				// Try to join the lobby
-				String joinResult = "";
-				if ((joinResult = server.joinLobby(chosenLobby)) == null) {
-					joinedLobby = chosenLobby;
-					unblock();
-				} else {
-					JOptionPane.showMessageDialog(null, "Error with join:\n" + joinResult);
-					
-					// Refresh the lobby list
-					refreshLobbies();
-				}
-			}
-		};
 		
 		if (lobbies.isEmpty()) {
 			lobbyListArea.setLayout(new FlowLayout());
@@ -138,11 +95,7 @@ public class LobbyBrowserUI extends SwingView {
 				// Wrap lobbies in displays
 				LobbyDisplay lobbyDisplay = new LobbyDisplay(lobby);
 				
-				// Map the join button the lobby
-				buttonMap.put(lobbyDisplay.getButton(), lobby);
-				
-				// Set the button's listener
-				lobbyDisplay.getButton().addActionListener(buttonListener);
+				lobbyDisplay.setController(controller);
 				
 				// Add the display to the container
 				lobbyListArea.add(lobbyDisplay);
@@ -174,5 +127,20 @@ public class LobbyBrowserUI extends SwingView {
 			}
 		}
 		return joinedLobby;
+	}
+
+	@Override
+	public void setController(final ILobbyBrowsingController controller) {
+		backButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.goBack();
+			}
+		});
+		
+		refreshButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.refresh();
+			}
+		});
 	}
 }

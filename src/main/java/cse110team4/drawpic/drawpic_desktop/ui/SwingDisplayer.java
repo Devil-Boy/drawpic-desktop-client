@@ -10,6 +10,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
+import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyBrowserUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionView;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LoginView;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.SwingView;
@@ -72,7 +73,9 @@ public class SwingDisplayer implements UIDisplayer {
 			setUI(lobbyOptionView);
 			break;
 		case LOBBY_BROWSING:
-			//setUI(DesktopBeans.getContext().getBean(arg0));
+			LobbyBrowserUI lobbyBrowserUI = DesktopBeans.getContext().getBean(LobbyBrowserUI.class);
+			lobbyBrowserUI.setController(DesktopBeans.getContext().getBean(LobbyBrowsingController.class));
+			setUI(lobbyBrowserUI);
 			break;
 		case IN_LOBBY:
 			break;

@@ -51,4 +51,14 @@
 	
 
 	
+	<bean id="swingLobbyBrowserView"
+		class="cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyBrowserUI">
+	
+	<constructor-arg ref="eventDispatcher"></constructor-arg>
+	</bean>
+	<bean id="swingLobbyBrowserController"
+		class="cse110team4.drawpic.drawpic_desktop.ui.LobbyBrowsingController">
+	<constructor-arg ref="jmsServerConnection"></constructor-arg>
+	<constructor-arg ref="swingLobbyBrowserView"></constructor-arg>
+	</bean>
 </beans>

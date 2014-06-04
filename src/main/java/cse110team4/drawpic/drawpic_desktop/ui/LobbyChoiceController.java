@@ -2,6 +2,7 @@ package cse110team4.drawpic.drawpic_desktop.ui;
 
 import javax.swing.JOptionPane;
 
+import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 
 /**
@@ -31,7 +32,9 @@ public class LobbyChoiceController implements ILobbyChoiceController {
 	@Override
 	public void joinLobby() {
 		String connect = connection.pollLobbyList();
-		if(connect != null){
+		if(connect == null){
+			DesktopBeans.getContext().getBean(DrawPicApp.class).setCurrentPhase(ClientPhase.LOBBY_BROWSING);
+		} else {
 			JOptionPane.showMessageDialog(null, "Error retrieving Lobby list:\n" + connect);
 		}
 	}

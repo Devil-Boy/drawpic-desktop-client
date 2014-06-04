@@ -28,7 +28,6 @@ public class LobbyOptionView extends SwingView implements ILobbyChoiceView{
 	private static final int PREFERRED_WIDTH = 300;
 	private static final int PREFERRED_HEIGHT = 300;
 	
-	private int lobbyChoice;
 	private JButton createLobbyButton;
 	private JButton joinLobbyButton;
 	
@@ -67,20 +66,6 @@ public class LobbyOptionView extends SwingView implements ILobbyChoiceView{
 		JPanel bottomPadding = new JPanel();
 		bottomPadding.setOpaque(false);
 		add(bottomPadding);
-		
-		// Listeners
-		createLobbyButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				lobbyChoice = 1;
-				
-			}
-		});
-		
-		joinLobbyButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				lobbyChoice = 2;
-			}
-		});
 	}
 	
 	/**
@@ -88,21 +73,6 @@ public class LobbyOptionView extends SwingView implements ILobbyChoiceView{
 	 */
 	public synchronized void notifyGuard() {
 		this.notify();
-	}
-
-	/**
-	 * Gets the player's choice regarding lobbies
-	 * It will block thread execution until login is successful
-	 * @return 1 if player wants to create a lobby, 2 if they want to join one
-	 */
-	public synchronized int getLobbyOption() {
-		while (lobbyChoice == 0) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-			}
-		}
-		return lobbyChoice;
 	}
 
 	@Override

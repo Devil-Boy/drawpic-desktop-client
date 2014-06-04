@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
-import cse110team4.drawpic.drawpic_desktop.ui.DrawPicApp.ClientPhase;
+import cse110team4.drawpic.drawpic_desktop.ui.ClientPhase;
 
 /**
  * @author Kirk
@@ -27,11 +27,14 @@ public class LobbyBrowsingController implements ILobbyBrowsingController {
 
 	@Override
 	public void joinLobby(Lobby lobby) {
-		String result = connection.joinLobby(lobby);
-
-		if(result != null){
-			JOptionPane.showMessageDialog(null, "Error joining Lobby:\n" + result);
-		}
+		// Try to join the lobby
+		String joinResult = "";
+		if ((joinResult = connection.joinLobby(lobby)) != null) {
+			JOptionPane.showMessageDialog(null, "Error with join:\n" + joinResult);
+			
+			// Refresh the lobby list
+			refresh();
+		} 
 	}
 
 	@Override
@@ -41,8 +44,10 @@ public class LobbyBrowsingController implements ILobbyBrowsingController {
 
 	@Override
 	public void refresh() {
-		connection.getLobbyList();
-
+		String result = connection.pollLobbyList();
+		if(result != null){
+			JOptionPane.showMessageDialog(null, "Error with refreshing lobbies:\n" + result);
+		}
 	}
 
 }

@@ -3,6 +3,7 @@ package cse110team4.drawpic.drawpic_desktop.ui.swing.panel;
 import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_core.player.Lobby;
+import cse110team4.drawpic.drawpic_desktop.ui.ILobbyBrowsingController;
 
 import java.awt.GridLayout;
 
@@ -11,10 +12,9 @@ import javax.swing.JButton;
 import javax.swing.border.BevelBorder;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class LobbyDisplay extends JPanel {
 	private static final Color BG_COLOR = new Color(0x69, 0xed, 0x5b);
@@ -70,5 +70,13 @@ public class LobbyDisplay extends JPanel {
 	
 	public JButton getButton() {
 		return joinButton;
+	}
+	
+	public void setController(final ILobbyBrowsingController controller) {
+		joinButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.joinLobby(lobby);
+			}
+		});
 	}
 }
