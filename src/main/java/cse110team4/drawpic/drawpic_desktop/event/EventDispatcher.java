@@ -78,7 +78,7 @@ public class EventDispatcher {
 	public <L> void call(Event<L> event) {
 		Class<Event<L>> eventClass = (Class<Event<L>>) event.getClass();
 		
-		for (L listener : listenersOf(eventClass)) {
+		for (L listener : new ArrayList<L>(listenersOf(eventClass))) {
 			event.notify(listener);
 		}
 	}
