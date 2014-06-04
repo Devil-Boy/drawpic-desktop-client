@@ -64,6 +64,7 @@
 	<bean id="swingInLobbyUIHost"
 		class="cse110team4.drawpic.drawpic_desktop.ui.swing.panel.InLobbyUIHost"
 		scope="singleton">
+	<constructor-arg ref="eventDispatcher"></constructor-arg>
 	</bean>
 	<bean id="swingInLobbyControllerHost"
 		class="cse110team4.drawpic.drawpic_desktop.ui.InLobbyController"
@@ -78,5 +79,6 @@
 	</bean>
 	<bean id="swingInLobbyUIPlayer"
 		class="cse110team4.drawpic.drawpic_desktop.ui.swing.panel.InLobbyUIPlayer">
+	<constructor-arg ref="eventDispatcher"></constructor-arg>
 	</bean>
 </beans>
