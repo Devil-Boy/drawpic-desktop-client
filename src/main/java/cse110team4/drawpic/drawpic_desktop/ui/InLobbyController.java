@@ -29,7 +29,7 @@ public class InLobbyController implements IInLobbyController {
 	}
 
 	@Override
-	public boolean startGame(Lobby lobby) {
+	public boolean startGame() {
 		return false;
 	}
 

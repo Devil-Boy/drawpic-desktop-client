@@ -56,6 +56,7 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientList
 	private IInLobbyController controller;
 	
 	private JButton leaveButton;
+	private JButton startButton;
 	
 	public InLobbyUIHost(EventDispatcher dispatch) {
 		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
@@ -106,8 +107,8 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientList
 		buttonArea.setOpaque(false);
 		add(buttonArea, BorderLayout.SOUTH);
 		
-		JButton btnStart = new JButton("Start");
-		buttonArea.add(btnStart);
+		startButton = new JButton("Start");
+		buttonArea.add(startButton);
 		
 		leaveButton = new JButton("Leave");
 		buttonArea.add(leaveButton);
@@ -134,7 +135,13 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientList
 		
 		leaveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.leaveLobby();;
+				controller.leaveLobby();
+			}
+		});
+		
+		startButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.startGame();
 			}
 		});
 	}
