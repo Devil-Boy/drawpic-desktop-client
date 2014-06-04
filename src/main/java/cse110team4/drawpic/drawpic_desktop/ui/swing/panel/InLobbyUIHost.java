@@ -5,7 +5,6 @@ import java.awt.Color;
 import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_core.player.Lobby;
-<<<<<<< HEAD
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
@@ -14,10 +13,8 @@ import cse110team4.drawpic.drawpic_desktop.event.lobby.LobbySettingsChangedEvent
 import cse110team4.drawpic.drawpic_desktop.event.lobby.PlayerJoinedLobbyEvent;
 import cse110team4.drawpic.drawpic_desktop.event.lobby.PlayerLeftLobbyEvent;
 import cse110team4.drawpic.drawpic_desktop.server.JMSServerConnection;
-=======
 import cse110team4.drawpic.drawpic_core.player.NormalLobbySettings;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
->>>>>>> branch 'master' of git@bitbucket.org:kirkkw/drawpic-desktop-client.git
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyController;
 import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyView;
