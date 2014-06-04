@@ -19,7 +19,7 @@ public class Logo extends JComponent {
 	
 	public Logo() throws IOException {
 		// Get logo image
-		InputStream logoStream = getClass().getResourceAsStream("/grphics/logo_alpha.png");
+		InputStream logoStream = getClass().getResourceAsStream("/graphics/logo_alpha.png");
 		logo = ImageIO.read(logoStream);
 		
 		// Set a minimum size

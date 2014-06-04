@@ -107,7 +107,6 @@ public class LobbyOptionUI extends DrawPicUI implements ILobbyChoiceView{
 
 	@Override
 	public void setController(final ILobbyChoiceController controller) {
-		controller.setView(this);
 		
 		createLobbyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
