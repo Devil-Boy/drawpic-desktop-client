@@ -61,4 +61,22 @@
 	<constructor-arg ref="jmsServerConnection"></constructor-arg>
 	<constructor-arg ref="swingLobbyBrowserView"></constructor-arg>
 	</bean>
+	<bean id="swingInLobbyUIHost"
+		class="cse110team4.drawpic.drawpic_desktop.ui.swing.panel.InLobbyUIHost"
+		scope="singleton">
+	</bean>
+	<bean id="swingInLobbyControllerHost"
+		class="cse110team4.drawpic.drawpic_desktop.ui.InLobbyController"
+		scope="singleton">
+	<constructor-arg ref="jmsServerConnection"></constructor-arg>
+	<constructor-arg ref="swingInLobbyUIHost"></constructor-arg>
+	</bean>
+	<bean id="swingInLobbyControllerPlayer"
+		class="cse110team4.drawpic.drawpic_desktop.ui.InLobbyController">
+	<constructor-arg ref="jmsServerConnection"></constructor-arg>
+	<constructor-arg ref="swingInLobbyUIPlayer"></constructor-arg>
+	</bean>
+	<bean id="swingInLobbyUIPlayer"
+		class="cse110team4.drawpic.drawpic_desktop.ui.swing.panel.InLobbyUIPlayer">
+	</bean>
 </beans>

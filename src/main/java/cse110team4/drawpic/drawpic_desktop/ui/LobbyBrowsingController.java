@@ -29,7 +29,9 @@ public class LobbyBrowsingController implements ILobbyBrowsingController {
 	public void joinLobby(Lobby lobby) {
 		// Try to join the lobby
 		String joinResult = "";
-		if ((joinResult = connection.joinLobby(lobby)) != null) {
+		if ((joinResult = connection.joinLobby(lobby)) == null) {
+			DesktopBeans.getContext().getBean(DrawPicApp.class).setCurrentPhase(ClientPhase.IN_LOBBY_PLAYER);
+		} else {
 			JOptionPane.showMessageDialog(null, "Error with join:\n" + joinResult);
 			
 			// Refresh the lobby list

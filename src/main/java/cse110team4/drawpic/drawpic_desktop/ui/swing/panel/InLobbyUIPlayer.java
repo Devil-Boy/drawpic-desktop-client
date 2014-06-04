@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
+import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyController;
+import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyView;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.Logo;
 
 import java.awt.BorderLayout;
@@ -22,7 +24,7 @@ import javax.swing.BoxLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 
-public class InLobbyUI extends SwingView {
+public class InLobbyUIPlayer extends SwingView implements IInLobbyView {
 
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;
@@ -34,8 +36,8 @@ public class InLobbyUI extends SwingView {
 	
 	private Map<Object, String> buttonMap;
 
-	public InLobbyUI(ServerConnection server) {
-		super(server, BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
+	public InLobbyUIPlayer() {
+		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Try getting the logo
 		try {
@@ -71,7 +73,7 @@ public class InLobbyUI extends SwingView {
 		add(panel, BorderLayout.EAST);
 		
 		JPanel panel2 = new JPanel();
-		panel2.add(new LobbySettingsDisplay());
+		panel2.add(new LobbySettingsDisplayPlayer());
 		
 		JScrollPane settingsArea = new JScrollPane(panel2);
 		panel.add(settingsArea);
@@ -80,9 +82,6 @@ public class InLobbyUI extends SwingView {
 		JPanel buttonArea = new JPanel();
 		buttonArea.setOpaque(false);
 		add(buttonArea, BorderLayout.SOUTH);
-		
-		JButton btnStart = new JButton("Start");
-		buttonArea.add(btnStart);
 		
 		JButton leaveButton = new JButton("Leave");
 		buttonArea.add(leaveButton);
@@ -95,4 +94,11 @@ public class InLobbyUI extends SwingView {
 		// Initialize the button-to-player database
 		buttonMap = new HashMap<Object, String>();
 	}
+
+	@Override
+	public void setController(IInLobbyController controller) {
+		// TODO Auto-generated method stub
+		
+	}
 }
+

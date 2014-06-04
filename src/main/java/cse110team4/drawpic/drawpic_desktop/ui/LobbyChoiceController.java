@@ -23,7 +23,9 @@ public class LobbyChoiceController implements ILobbyChoiceController {
 	@Override
 	public void createLobby() {
 		String connect = connection.createLobby();
-		if(connect != null){
+		if(connect == null){
+			DesktopBeans.getContext().getBean(DrawPicApp.class).setCurrentPhase(ClientPhase.IN_LOBBY_HOST);
+		} else {
 			JOptionPane.showMessageDialog(null, "Error creating Lobby:\n" + connect);
 		}
 		
