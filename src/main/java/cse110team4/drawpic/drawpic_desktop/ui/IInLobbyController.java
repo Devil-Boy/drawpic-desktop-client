@@ -11,7 +11,7 @@ public interface IInLobbyController {
 	
 	//returns true if game can be started (4 player requirement)
 	//else returns false
-	public boolean startGame();
+	public void startGame();
 	
 	//JudgeSetting can only be from the JudgeSetting enum
 	//(RANDOM, HOST_ONLY, IN_ORDER)
@@ -19,11 +19,11 @@ public interface IInLobbyController {
 	
 	//num is number of rounds per game
 	//returns true if valid number of rounds (not less than number of wins)
-	public boolean changeSettingNumRounds(int num);
+	public void changeSettingNumRounds(int num);
 	
 	//num is the number of wins for a player to win the game
 	//returns true if valid (not more than number of rounds)
-	public boolean changeSettingNumWins(int num);
+	public void changeSettingNumWins(int num);
 	
 	//time is the time per draw phase (in seconds)
 	public void changeSettingDrawTime(int time);

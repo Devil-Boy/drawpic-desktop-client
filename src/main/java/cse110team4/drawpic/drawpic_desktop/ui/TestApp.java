@@ -18,10 +18,10 @@ public class TestApp {
 		
 		System.err.println(sc.login("R2D2"));
 		
-		System.err.println(sc.pollLobbyList());
-		System.err.println(sc.joinLobby(sc.getLobbyList().get(0)));
+		//System.err.println(sc.pollLobbyList());
+		//System.err.println(sc.joinLobby(sc.getLobbyList().get(0)));
 		
-		//System.err.println(sc.createLobby());
+		System.err.println(sc.createLobby());
 		
 		/*
 		NormalLobbySettings newSettings = new NormalLobbySettings();
