@@ -30,6 +30,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.border.TitledBorder;
@@ -48,6 +50,8 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientLi
 	private Map<Object, String> buttonMap;
 
 	private IInLobbyController controller;
+	
+	private JButton leaveButton;
 	
 	public InLobbyUIPlayer(EventDispatcher dispatch) {
 		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
@@ -98,7 +102,7 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientLi
 		buttonArea.setOpaque(false);
 		add(buttonArea, BorderLayout.SOUTH);
 		
-		JButton leaveButton = new JButton("Leave");
+		leaveButton = new JButton("Leave");
 		buttonArea.add(leaveButton);
 	}
 	
@@ -112,12 +116,20 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientLi
 		}
 		// Initialize the button-to-player database
 		buttonMap = new HashMap<Object, String>();
+		
+		revalidate();
 	}
 
 	@Override
-	public void setController(IInLobbyController controller) {
+	public void setController(final IInLobbyController controller) {
 		// TODO Auto-generated method stub
 		this.controller = controller;
+		
+		leaveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.leaveLobby();
+			}
+		});
 	}
 
 	@Override
@@ -135,14 +147,13 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientLi
 	@Override
 	public void playerJoinedLobby(PlayerJoinedLobbyEvent event) {
 		// TODO Auto-generated method stub
-		
 		refreshPlayers();
 	}
 
 	@Override
 	public void playerLeftLobby(PlayerLeftLobbyEvent event) {
 		// TODO Auto-generated method stub
-		
+		System.err.println("PLAYER LEFT LOBBY!");
 		refreshPlayers();
 	}
 

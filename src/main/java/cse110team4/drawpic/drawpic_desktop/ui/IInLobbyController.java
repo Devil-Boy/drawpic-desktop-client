@@ -9,10 +9,9 @@ public interface IInLobbyController {
 	//Lobby is the lobby 
 	public void leaveLobby();
 	
-	//Lobby is the lobby whose game we're starting
 	//returns true if game can be started (4 player requirement)
 	//else returns false
-	public boolean startGame(Lobby lobby);
+	public boolean startGame();
 	
 	//JudgeSetting can only be from the JudgeSetting enum
 	//(RANDOM, HOST_ONLY, IN_ORDER)

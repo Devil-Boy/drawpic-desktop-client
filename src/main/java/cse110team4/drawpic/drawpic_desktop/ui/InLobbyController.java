@@ -29,8 +29,15 @@ public class InLobbyController implements IInLobbyController {
 	}
 
 	@Override
-	public boolean startGame(Lobby lobby) {
-		return false;
+	public boolean startGame() {
+		String startResult = connection.startGame();
+		if (startResult == null) {
+			
+			return true;
+		} else {
+			JOptionPane.showMessageDialog(null, "Error starting game:\n" + startResult);
+			return false;
+		}
 	}
 
 	@Override

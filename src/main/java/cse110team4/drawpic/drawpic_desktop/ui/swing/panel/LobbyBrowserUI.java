@@ -80,6 +80,9 @@ public class LobbyBrowserUI extends SwingView implements ILobbyBrowsingView, Ser
 		// Empty the container
 		lobbyListArea.removeAll();
 		
+		if (lobbies == null)
+			return;
+		
 		if (lobbies.isEmpty()) {
 			lobbyListArea.setLayout(new FlowLayout());
 			

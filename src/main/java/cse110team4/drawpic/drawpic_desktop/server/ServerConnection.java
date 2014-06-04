@@ -73,4 +73,10 @@ public interface ServerConnection {
 	 * @return null if successful, otherwise a reason for failure
 	 */
 	String changeLobbySettings(LobbySettings settings);
+	
+	/**
+	 * Attempts to start the game
+	 * @return null if successful, otherwise a reason for failure
+	 */
+	String startGame();
 }
