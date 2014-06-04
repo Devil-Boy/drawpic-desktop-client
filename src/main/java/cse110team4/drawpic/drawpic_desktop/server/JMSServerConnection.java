@@ -11,17 +11,22 @@ import javax.jms.Queue;
 import javax.jms.Session;
 
 import cse110team4.drawpic.drawpic_core.ActiveMQConstants;
+import cse110team4.drawpic.drawpic_core.CloseHook;
 import cse110team4.drawpic.drawpic_core.player.ClientData;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
+import cse110team4.drawpic.drawpic_core.player.LobbySettings;
 import cse110team4.drawpic.drawpic_core.protocol.CorrelationIDGenerator;
+import cse110team4.drawpic.drawpic_core.protocol.jms.JMSCloseHook;
 import cse110team4.drawpic.drawpic_core.protocol.jms.JMSPacketSender;
 import cse110team4.drawpic.drawpic_core.protocol.packet.Packet;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketDistributor;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketReply;
+import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet0ELobbySettings;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet03Response;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet09LobbyList;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet01Connect;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet02Login;
+import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet06Disconnect;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet07CreateLobby;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet08GetLobbies;
 import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet0AJoinLobby;
@@ -29,6 +34,7 @@ import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.lobby.LobbySettingsChangedEvent;
 import cse110team4.drawpic.drawpic_desktop.event.server.ServerLobbyListSetEvent;
 
 /**
@@ -79,8 +85,6 @@ public class JMSServerConnection implements ServerConnection {
 		try {
 			connection.start();
 			
-			// TODO: Add close hook to clean up on disconnect
-			
 			// Create the session
 			session = DesktopBeans.getContext().getBean("activeMQSession", Session.class);
 			
@@ -94,6 +98,20 @@ public class JMSServerConnection implements ServerConnection {
 			out = DesktopBeans.getContext().getBean("jmsPacketSender", JMSPacketSender.class);
 			out.setProducer(session.createProducer(serverQueue));
 			out.setReplyTo(clientQueue);
+			
+			// Register close hooks
+			CloseHook closeHook = new CloseHook();
+			closeHook.addHook(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						out.sendPacket(new Packet06Disconnect());
+					} catch (Exception e) {
+						(new Exception("Couldn't send disconnect packet")).printStackTrace();
+					}
+				}
+			});
+			closeHook.addHook(new JMSCloseHook());
 			
 			// Prepare the packet receiver
 			session.createConsumer(clientQueue).setMessageListener(DesktopBeans.getContext().getBean(JMSClientMessageListener.class));
@@ -288,6 +306,45 @@ public class JMSServerConnection implements ServerConnection {
 	public String leaveLobby() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String changeLobbySettings(LobbySettings settings) {
+		// Prepare packet
+		Packet lobbyPacket = new Packet0ELobbySettings(settings);
+		lobbyPacket.setCorrelationID(cID());
+		
+		// Prepare for the reply
+		PacketReply<Packet03Response> reply = new PacketReply<Packet03Response>(packetDistributor, (byte) 0x03, lobbyPacket.getCorrelationID());
+		
+		// Send the packet
+		try {
+			out.sendPacket(lobbyPacket);
+		} catch (Exception e) {
+			return "Could not send packet to change lobby settings";
+		}
+		
+		// Wait for the reply
+		try {
+			Packet03Response lobbyResult = reply.get(CONNECTION_TIMEOUT, TimeUnit.SECONDS);
+			if (lobbyResult.getSuccess()) {
+				// Set the lobby settings
+				clientData.getLobby().setSettings(settings);
+				
+				// Send the event
+				DesktopBeans.getContext().getBean(EventDispatcher.class).call(new LobbySettingsChangedEvent(clientData.getLobby()));
+				
+				return null;
+			} else {
+				return lobbyResult.getFailReason();
+			}
+		} catch (TimeoutException e) {
+			return "Connection timed out after " + CONNECTION_TIMEOUT + " seconds";
+		} catch (InterruptedException e) {
+			return "Interrupted while waiting for response";
+		} catch (ExecutionException e) {
+			return "Error while attempting to get response: " + e.getCause().getMessage();
+		}
 	}
 
 }

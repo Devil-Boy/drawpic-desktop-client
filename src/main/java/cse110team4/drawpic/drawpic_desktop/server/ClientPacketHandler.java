@@ -1,8 +1,13 @@
 package cse110team4.drawpic.drawpic_desktop.server;
 
+import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_core.protocol.packet.Packet;
 import cse110team4.drawpic.drawpic_core.protocol.packet.PacketHandler;
+import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet0ELobbySettings;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet0BPlayerJoined;
+import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
+import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
+import cse110team4.drawpic.drawpic_desktop.event.lobby.PlayerJoinedLobbyEvent;
 
 public class ClientPacketHandler implements PacketHandler {
 
@@ -10,14 +15,27 @@ public class ClientPacketHandler implements PacketHandler {
 	public void handlePacket(Packet packet) {
 		byte packetID = packet.getID();
 		
-		System.out.println("Received a packet: " + packetID);
+		System.out.println("Received a packet: " + packetID);////
 		
 		if (packetID == 0x0B) {
 			handlePlayerJoined((Packet0BPlayerJoined) packet);
+		} else if (packetID == 0x0E) {
+			handleLobbySettingsChanges((Packet0ELobbySettings) packet);
 		}
 	}
 
 	public void handlePlayerJoined(Packet0BPlayerJoined packet) {
-		System.out.println(packet.getUsername() + " joined the lobby");
+		System.out.println(packet.getUsername() + " joined the lobby");////
+		
+		// Add the player to our lobby instance
+		Lobby lobby = DesktopBeans.getContext().getBean(JMSServerConnection.class).getClientData().getLobby();
+		lobby.addPlayer(packet.getUsername());
+		
+		// Send the event
+		DesktopBeans.getContext().getBean(EventDispatcher.class).call(new PlayerJoinedLobbyEvent(lobby, packet.getUsername()));
+	}
+	
+	public void handleLobbySettingsChanges(Packet0ELobbySettings packet) {
+		
 	}
 }

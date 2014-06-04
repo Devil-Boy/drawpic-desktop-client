@@ -4,6 +4,7 @@ import java.util.List;
 
 import cse110team4.drawpic.drawpic_core.player.ClientData;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
+import cse110team4.drawpic.drawpic_core.player.LobbySettings;
 
 /**
  * This will be the interface for the client to the server
@@ -46,7 +47,8 @@ public interface ServerConnection {
 	String createLobby();
 	
 	/**
-	 * Obtains the lobby list from the server
+	 * Obtains the lobby list from the server and stores it
+	 * The list can be obtained from getLobbyList()
 	 * @return null if lobby list retrieval was successful, otherwise a reason for failure
 	 */
 	 String pollLobbyList();
@@ -64,4 +66,11 @@ public interface ServerConnection {
 	 * @return null if successful, otherwise a reason for failure
 	 */
 	String leaveLobby();
+	
+	/**
+	 * Attempts to change the settings of the current lobby
+	 * @param settings The new settings to apply to the lobby
+	 * @return null if successful, otherwise a reason for failure
+	 */
+	String changeLobbySettings(LobbySettings settings);
 }
