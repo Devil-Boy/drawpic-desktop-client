@@ -1,6 +1,7 @@
 package cse110team4.drawpic.drawpic_desktop.server;
 
 import cse110team4.drawpic.drawpic_core.gamesession.GamePhase;
+import cse110team4.drawpic.drawpic_core.player.ClientData;
 import cse110team4.drawpic.drawpic_core.player.GameData;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_core.protocol.packet.Packet;
@@ -10,8 +11,10 @@ import cse110team4.drawpic.drawpic_core.protocol.packet.bidirectional.Packet0FSt
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet0BPlayerJoined;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet0DPlayerLeft;
 import cse110team4.drawpic.drawpic_core.protocol.packet.clientbound.Packet10SetJudge;
+import cse110team4.drawpic.drawpic_core.protocol.packet.serverbound.Packet04KickLobby;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
+import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.game.GameJudgeSetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.game.GamePhaseSetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.lobby.LobbySettingsChangedEvent;
@@ -26,7 +29,9 @@ public class ClientPacketHandler implements PacketHandler {
 		
 		System.out.println("Received a packet: " + packetID);////
 		
-		if (packetID == 0x0B) {
+		if (packetID == 0x04) {
+			handleGotKicked((Packet04KickLobby) packet);
+		} else if (packetID == 0x0B) {
 			handlePlayerJoined((Packet0BPlayerJoined) packet);
 		} else if (packetID == 0x0D) {
 			handlePlayerLeft((Packet0DPlayerLeft) packet);
@@ -37,6 +42,13 @@ public class ClientPacketHandler implements PacketHandler {
 		} else if (packetID == 0x10) {
 			handleJudgeSet((Packet10SetJudge) packet);
 		}
+	}
+	
+	public void handleGotKicked(Packet04KickLobby packet) {
+		ClientData data = DesktopBeans.getContext().getBean(JMSServerConnection.class).getClientData();
+		data.setLobby(null);
+		
+		DesktopBeans.getContext().getBean(EventDispatcher.class).call(new ClientLobbySetEvent(data));
 	}
 
 	public void handlePlayerJoined(Packet0BPlayerJoined packet) {

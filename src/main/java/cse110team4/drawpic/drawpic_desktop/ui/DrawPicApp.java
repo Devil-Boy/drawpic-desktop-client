@@ -2,6 +2,8 @@ package cse110team4.drawpic.drawpic_desktop.ui;
 
 import java.util.Arrays;
 
+import javax.swing.JOptionPane;
+
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
@@ -64,7 +66,10 @@ public class DrawPicApp implements ClientListener{
 
 	@Override
 	public void lobbySet(ClientLobbySetEvent event) {
-		if(event.getLobby() != null){
+		if(event.getLobby() == null){
+			JOptionPane.showMessageDialog(null, "Kicked from lobby");
+			this.setCurrentPhase(ClientPhase.LOBBY_OPTION);
+		} else {
 			if (event.getLobby().getHost() == connection.getClientData().getUsername()) {
 				this.setCurrentPhase(ClientPhase.IN_LOBBY_HOST);
 			}
