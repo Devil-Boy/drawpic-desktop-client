@@ -36,7 +36,7 @@ public class InLobbyUIPlayer extends SwingView implements IInLobbyView {
 	
 	private Map<Object, String> buttonMap;
 
-	public InLobbyUIPlayer(ServerConnection server) {
+	public InLobbyUIPlayer() {
 		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Try getting the logo
