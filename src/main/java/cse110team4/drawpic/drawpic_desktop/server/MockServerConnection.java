@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 import cse110team4.drawpic.drawpic_core.player.ClientData;
+import cse110team4.drawpic.drawpic_core.player.GameData;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
+import cse110team4.drawpic.drawpic_core.player.LobbySettings;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
@@ -46,7 +48,7 @@ public class MockServerConnection implements ServerConnection {
 		mockLobbies = new ArrayList<Lobby>();
 		
 		for (String name : names) {
-			Lobby lobby = DesktopBeans.getContext().getBean("defualtFourPlayerLobby", Lobby.class);
+			Lobby lobby = DesktopBeans.getContext().getBean("defaultFourPlayerLobby", Lobby.class);
 			lobby.setHost(name);
 			
 			mockLobbies.add(lobby);
@@ -128,6 +130,24 @@ public class MockServerConnection implements ServerConnection {
 
 	@Override
 	public String leaveLobby() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GameData getGameData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String changeLobbySettings(LobbySettings settings) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String startGame() {
 		// TODO Auto-generated method stub
 		return null;
 	}

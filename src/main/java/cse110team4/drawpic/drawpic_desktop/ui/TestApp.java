@@ -15,28 +15,11 @@ public class TestApp {
 		ServerConnection sc = DesktopBeans.getContext().getBean(JMSServerConnection.class);
 		
 		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
-		System.err.println(sc.connect());
 		
-		//System.err.println(sc.login("R2D2"));
+		System.err.println(sc.login("R2D2"));
 		
-		//System.err.println(sc.pollLobbyList());
-		//System.err.println(sc.joinLobby(sc.getLobbyList().get(0)));
+		System.err.println(sc.pollLobbyList());
+		System.err.println(sc.joinLobby(sc.getLobbyList().get(0)));
 		
 		//System.err.println(sc.createLobby());
 		
@@ -47,6 +30,8 @@ public class TestApp {
 		newSettings.setMaxWins(99999);
 		newSettings.setRounds(-8);
 		System.err.println(sc.changeLobbySettings(newSettings));*/
+		
+		System.err.println(sc.startGame());
 	}
 	
 	public static void printLobbies(List<Lobby> lobbyList) {

@@ -14,6 +14,7 @@ import cse110team4.drawpic.drawpic_core.ActiveMQConstants;
 import cse110team4.drawpic.drawpic_core.CloseHook;
 import cse110team4.drawpic.drawpic_core.gamesession.GamePhase;
 import cse110team4.drawpic.drawpic_core.player.ClientData;
+import cse110team4.drawpic.drawpic_core.player.GameData;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_core.player.LobbySettings;
 import cse110team4.drawpic.drawpic_core.protocol.CorrelationIDGenerator;
@@ -37,7 +38,7 @@ import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
-import cse110team4.drawpic.drawpic_desktop.event.gamephase.PhaseStartEvent;
+import cse110team4.drawpic.drawpic_desktop.event.game.GamePhaseSetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.lobby.LobbySettingsChangedEvent;
 import cse110team4.drawpic.drawpic_desktop.event.server.ServerLobbyListSetEvent;
 
@@ -62,16 +63,23 @@ public class JMSServerConnection implements ServerConnection {
 	
 	private PacketDistributor packetDistributor;
 	
-	private ClientData clientData;
 	private List<Lobby> lobbyList;
+	private ClientData clientData;
+	private GameData gameData;
 	
-	public JMSServerConnection(ClientData clientData) {
+	public JMSServerConnection(ClientData clientData, GameData gameData) {
 		this.clientData = clientData;
+		this.gameData = gameData;
 	}
 	
 	@Override
 	public ClientData getClientData() {
 		return clientData;
+	}
+	
+	@Override
+	public GameData getGameData() {
+		return gameData;
 	}
 	
 	@Override
@@ -109,6 +117,7 @@ public class JMSServerConnection implements ServerConnection {
 				@Override
 				public void run() {
 					try {
+						System.out.println("Diconnecting from server...");
 						out.sendPacket(new Packet06Disconnect());
 					} catch (Exception e) {
 						(new Exception("Couldn't send disconnect packet")).printStackTrace();
@@ -386,9 +395,6 @@ public class JMSServerConnection implements ServerConnection {
 		try {
 			Packet03Response gameResult = reply.get(CONNECTION_TIMEOUT, TimeUnit.SECONDS);
 			if (gameResult.getSuccess()) {
-				// Send the event
-				DesktopBeans.getContext().getBean(EventDispatcher.class).call(new PhaseStartEvent(GamePhase.DRAW_PHASE));
-				
 				return null;
 			} else {
 				return gameResult.getFailReason();

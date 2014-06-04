@@ -9,5 +9,5 @@ package cse110team4.drawpic.drawpic_desktop.ui;
  */
 public interface IGameSpectateView {
 
-	public void settController();
+	public void setController(IGameSpectateController controller);
 }

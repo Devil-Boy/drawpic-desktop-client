@@ -2,7 +2,6 @@ package cse110team4.drawpic.drawpic_desktop.ui;
 
 import javax.swing.JOptionPane;
 
-import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_core.player.NormalLobbySettings.JudgeSetting;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
