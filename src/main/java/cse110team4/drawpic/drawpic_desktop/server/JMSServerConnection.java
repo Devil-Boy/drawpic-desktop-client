@@ -29,6 +29,7 @@ import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.server.ServerLobbyListSetEvent;
 
 /**
  * This represents a connection to a JMS server
@@ -227,7 +228,13 @@ public class JMSServerConnection implements ServerConnection {
 		// Wait for the reply
 		try {
 			Packet09LobbyList lobbyResult = reply.get(CONNECTION_TIMEOUT, TimeUnit.SECONDS);
+			
+			// Set the lobby list
 			lobbyList = lobbyResult.getLobbies();
+			
+			// Send the event
+			DesktopBeans.getContext().getBean(EventDispatcher.class).call(new ServerLobbyListSetEvent(this));
+			
 			return null;
 		} catch (TimeoutException e) {
 			return "Connection timed out after " + CONNECTION_TIMEOUT + " seconds";

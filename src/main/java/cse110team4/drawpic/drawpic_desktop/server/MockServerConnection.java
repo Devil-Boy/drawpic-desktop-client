@@ -9,6 +9,7 @@ import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.server.ServerLobbyListSetEvent;
 
 /**
  * This is just a mock class that allows us to test other parts of the program
@@ -104,6 +105,9 @@ public class MockServerConnection implements ServerConnection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// Send the event
+		DesktopBeans.getContext().getBean(EventDispatcher.class).call(new ServerLobbyListSetEvent(this));
 		
 		return null;
 	}
