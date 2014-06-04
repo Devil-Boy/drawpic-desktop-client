@@ -28,4 +28,5 @@ public interface IInLobbyController {
 	
 	//time is the time per draw phase (in seconds)
 	public void changeSettingDrawTime(int time);
+	
 }

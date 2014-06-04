@@ -12,6 +12,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.server.ServerLobbyListSetEvent;
+import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.InLobbyUIHost;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.InLobbyUIPlayer;
@@ -87,11 +88,13 @@ public class SwingDisplayer implements UIDisplayer {
 		case IN_LOBBY_HOST:
 			InLobbyUIHost inLobbyUIHost = DesktopBeans.getContext().getBean(InLobbyUIHost.class);
 			inLobbyUIHost.setController(DesktopBeans.getContext().getBean("swingInLobbyControllerHost", InLobbyController.class));
+			DesktopBeans.getContext().getBean(EventDispatcher.class).register(ClientLobbySetEvent.class, inLobbyUIHost);
 			setUI(inLobbyUIHost);
 			break;
 		case IN_LOBBY_PLAYER:
 			InLobbyUIPlayer inLobbyUIPlayer = DesktopBeans.getContext().getBean(InLobbyUIPlayer.class);
 			inLobbyUIPlayer.setController(DesktopBeans.getContext().getBean("swingInLobbyControllerPlayer", InLobbyController.class));
+			DesktopBeans.getContext().getBean(EventDispatcher.class).register(ClientLobbySetEvent.class, inLobbyUIPlayer);
 			setUI(inLobbyUIPlayer);
 			break;
 		case GAME_DRAW:
