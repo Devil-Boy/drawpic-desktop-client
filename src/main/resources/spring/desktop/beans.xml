@@ -16,6 +16,7 @@
 		class="cse110team4.drawpic.drawpic_desktop.server.JMSServerConnection"
 		scope="singleton">
 		<constructor-arg ref="clientData"></constructor-arg>
+		<constructor-arg ref="gameData"></constructor-arg>
 	</bean>
 	<bean id="jmsClientMessageListener"
 		class="cse110team4.drawpic.drawpic_desktop.server.JMSClientMessageListener"

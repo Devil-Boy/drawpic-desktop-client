@@ -3,6 +3,7 @@ package cse110team4.drawpic.drawpic_desktop.server;
 import java.util.List;
 
 import cse110team4.drawpic.drawpic_core.player.ClientData;
+import cse110team4.drawpic.drawpic_core.player.GameData;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_core.player.LobbySettings;
 
@@ -19,6 +20,12 @@ public interface ServerConnection {
 	 * @return The ClientData object
 	 */
 	ClientData getClientData();
+	
+	/**
+	 * Gets the object storing the game data
+	 * @return The GameData object
+	 */
+	GameData getGameData();
 	
 	/**
 	 * Gets the polled lobby list from the server
