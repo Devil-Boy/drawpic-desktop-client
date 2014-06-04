@@ -40,7 +40,7 @@ public class LobbySettingsDisplayPlayer extends JPanel {
 		JLabel lblNumberOfRounds = new JLabel("Number of Rounds:");
 		rounds.add(lblNumberOfRounds);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
+		JLabel lblNewLabel_1 = new JLabel("" + settings.getRounds());
 		rounds.add(lblNewLabel_1);
 		
 		JPanel wins = new JPanel();
@@ -49,7 +49,7 @@ public class LobbySettingsDisplayPlayer extends JPanel {
 		JLabel lblNumberOfWins = new JLabel("Number of Wins Required:");
 		wins.add(lblNumberOfWins);
 		
-		JLabel lblNewLabel_2 = new JLabel("New label");
+		JLabel lblNewLabel_2 = new JLabel("" + settings.getMaxWins());
 		wins.add(lblNewLabel_2);
 		
 		JPanel time = new JPanel();
@@ -58,7 +58,7 @@ public class LobbySettingsDisplayPlayer extends JPanel {
 		JLabel lblDrawingTime = new JLabel("Drawing Time (Seconds):");
 		time.add(lblDrawingTime);
 		
-		JLabel lblNewLabel_3 = new JLabel("New label");
+		JLabel lblNewLabel_3 = new JLabel("" + settings.getDrawTime());
 		time.add(lblNewLabel_3);
 
 	}

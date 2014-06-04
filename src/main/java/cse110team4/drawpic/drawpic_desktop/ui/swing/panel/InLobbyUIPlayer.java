@@ -41,7 +41,7 @@ import javax.swing.border.LineBorder;
 public class InLobbyUIPlayer extends SwingView implements IInLobbyView, ClientListener, LobbyListener {
 
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
-	private static final int PREFERRED_WIDTH = 300;
+	private static final int PREFERRED_WIDTH = 500;
 	private static final int PREFERRED_HEIGHT = 300;
 	
 	private Logo logo;
