@@ -6,9 +6,11 @@ import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
+import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.listener.ClientListener;
+import cse110team4.drawpic.drawpic_desktop.event.listener.LobbyListener;
 import cse110team4.drawpic.drawpic_desktop.event.lobby.LobbySettingsChangedEvent;
 import cse110team4.drawpic.drawpic_desktop.event.lobby.PlayerJoinedLobbyEvent;
 import cse110team4.drawpic.drawpic_desktop.event.lobby.PlayerLeftLobbyEvent;
@@ -36,7 +38,7 @@ import javax.swing.BoxLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 
-public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientListener {
+public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientListener, LobbyListener {
 
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;
@@ -51,8 +53,13 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientList
 
 	private IInLobbyController controller;
 	
-	public InLobbyUIHost() {
+	public InLobbyUIHost(EventDispatcher dispatch) {
 		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
+		
+		dispatch.register(ClientLobbySetEvent.class, this);
+		dispatch.register(PlayerJoinedLobbyEvent.class, this);
+		dispatch.register(PlayerLeftLobbyEvent.class, this);
+		dispatch.register(LobbySettingsChangedEvent.class, this);
 		
 		// Try getting the logo
 		try {
@@ -129,7 +136,6 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientList
 	@Override
 	public void lobbySet(ClientLobbySetEvent event) {
 		// TODO Auto-generated method stub
-		System.err.println("Lobby set!!!!");
 		refreshPlayers();
 	}
 	
@@ -137,5 +143,22 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView, ClientList
 		panel2.removeAll();
 		panel2.add(new LobbySettingsDisplay((NormalLobbySettings) DesktopBeans.getContext().getBean(ServerConnection.class).getClientData().getLobby().getSettings()));
 	
+	}
+
+	@Override
+	public void playerJoinedLobby(PlayerJoinedLobbyEvent event) {
+		// TODO Auto-generated method stub
+		refreshPlayers();
+	}
+
+	@Override
+	public void playerLeftLobby(PlayerLeftLobbyEvent event) {
+		// TODO Auto-generated method stub
+		refreshPlayers();
+	}
+
+	@Override
+	public void settingsChanged(LobbySettingsChangedEvent event) {
+		// TODO Auto-generated method stub
 	}
 }
