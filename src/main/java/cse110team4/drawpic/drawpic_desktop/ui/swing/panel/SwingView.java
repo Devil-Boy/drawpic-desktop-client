@@ -6,13 +6,11 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
-
-public abstract class DrawPicUI extends JPanel {
+public abstract class SwingView extends JPanel {
 	
 	JButton defaultButton;
 	
-	public DrawPicUI(Color bgColor, int preferredWidth, int preferredHeight) {
+	public SwingView(Color bgColor, int preferredWidth, int preferredHeight) {
 		
 		// Set background color
 		setBackground(bgColor);

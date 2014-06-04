@@ -14,7 +14,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import cse110team4.drawpic.drawpic_core.player.Lobby;
 import cse110team4.drawpic.drawpic_desktop.server.MockServerConnection;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
-import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.DrawPicUI;
+import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.SwingView;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyBrowserUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionView;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LoginView;
@@ -92,7 +92,7 @@ public class SwingUI implements Runnable {
 		}
 	}
 	
-	private void setUI(DrawPicUI ui) {
+	private void setUI(SwingView ui) {
 		window.setVisible(false);
 		window.getContentPane().removeAll();
 		window.add(ui);

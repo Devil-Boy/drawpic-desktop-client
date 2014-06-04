@@ -1,24 +1,13 @@
 package cse110team4.drawpic.drawpic_desktop.ui;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.event.EventDispatcher;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientLobbySetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.client.ClientUsernameSetEvent;
 import cse110team4.drawpic.drawpic_desktop.event.listener.ClientListener;
-import cse110team4.drawpic.drawpic_desktop.server.JMSServerConnection;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
-import cse110team4.drawpic.drawpic_desktop.ui.console.ConsoleUI;
-import cse110team4.drawpic.drawpic_desktop.ui.swing.SwingUI;
 
 /**
  * This is the main class (starting point) of our desktop application
@@ -28,36 +17,42 @@ import cse110team4.drawpic.drawpic_desktop.ui.swing.SwingUI;
  */
 public class DrawPicApp implements ClientListener{
 	
-	ServerConnection server;
+	ServerConnection connection;
 	
-	public DrawPicApp(){
-		server = DesktopBeans.getContext().getBean(JMSServerConnection.class);
+	UIDisplayer displayer;
+
+	public DrawPicApp(ServerConnection connection){
+		this.connection = connection;
+	}
+	
+	public void setDisplayer(UIDisplayer displayer) {
+		this.displayer = displayer;
+	}
+	
+	private void registerEvents() {
 		DesktopBeans.getContext().getBean(EventDispatcher.class).register(ClientUsernameSetEvent.class, this);
 		DesktopBeans.getContext().getBean(EventDispatcher.class).register(ClientLobbySetEvent.class, this);
 	}
 	
-	public enum ClientPhase{
-		LOGIN,
-		LOBBY_OPTION,
-		LOBBY_BROWSING,
-		IN_LOBBY,
-		GAME_DRAW,
-		GAME_JUDGE,
-		GAME_RESULTS
+	public void start() {
+		registerEvents();
+		
+		connection.connect();
+		
+		displayer.viewPhase(ClientPhase.LOGIN);
 	}
 	
 	private ClientPhase currentPhase;
 	
     public static void main(String[] args) {
-    	new DrawPicApp();
-    	Runnable localUI;
+    	DrawPicApp app = DesktopBeans.getContext().getBean(DrawPicApp.class);
     	if (Arrays.asList(args).contains("-console")) {
-    		localUI = new ConsoleUI();
+    		// TODO: Not yet implemented
     	}
     	else {
-    		localUI = new SwingUI();
+    		app.setDisplayer(DesktopBeans.getContext().getBean(SwingDisplayer.class));
     	}
-    	localUI.run();
+    	app.start();
     }
 
 	@Override
@@ -80,6 +75,6 @@ public class DrawPicApp implements ClientListener{
 	}
 
 	public void setCurrentPhase(ClientPhase currentPhase) {
-		this.currentPhase = currentPhase;
+		displayer.viewPhase(this.currentPhase = currentPhase);
 	}
 }

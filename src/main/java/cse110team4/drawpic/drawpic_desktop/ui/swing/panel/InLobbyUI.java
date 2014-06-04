@@ -22,7 +22,7 @@ import javax.swing.BoxLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 
-public class InLobbyUI extends DrawPicUI {
+public class InLobbyUI extends SwingView {
 
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;

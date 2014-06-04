@@ -6,28 +6,49 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
 
+	
+	<bean id="drawPicApp"
+		class="cse110team4.drawpic.drawpic_desktop.ui.DrawPicApp"
+		scope="singleton">
+
+	<constructor-arg ref="jmsServerConnection"></constructor-arg>
+	</bean>
+	<bean id="swingDisplayer"
+		class="cse110team4.drawpic.drawpic_desktop.ui.SwingDisplayer">
+	</bean>
+	
+	
 	<bean id="swingLogInController"
 		class="cse110team4.drawpic.drawpic_desktop.ui.LogInController"
 		scope="singleton">
 	<constructor-arg ref="jmsServerConnection"></constructor-arg>
 	<constructor-arg ref="swingLogInView"></constructor-arg>
 	</bean>
+	
+	
+	
 	<bean id="swingLogInView"
 		class="cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LoginView"
 		scope="singleton">
 	</bean>
+	
+	
+	
 	<bean id="swingLobbyChoiceController"
 		class="cse110team4.drawpic.drawpic_desktop.ui.LobbyChoiceController"
 		scope="singleton">
 	<constructor-arg ref="jmsServerConnection"></constructor-arg>
 	<constructor-arg ref="swingLobbyChoiceView"></constructor-arg>
 	</bean>
+	
+	
+	
 	<bean id="swingLobbyChoiceView"
 		class="cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionView"
 		scope="singleton">
 	</bean>
-	<bean id="drawPicApp"
-		class="cse110team4.drawpic.drawpic_desktop.ui.DrawPicApp"
-		scope="singleton">
-	</bean>
+	
+	
+
+	
 </beans>
