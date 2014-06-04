@@ -5,6 +5,8 @@ import java.awt.Color;
 import javax.swing.JPanel;
 
 import cse110team4.drawpic.drawpic_core.player.Lobby;
+import cse110team4.drawpic.drawpic_core.player.NormalLobbySettings;
+import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyController;
 import cse110team4.drawpic.drawpic_desktop.ui.IInLobbyView;
@@ -33,6 +35,7 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView {
 	private Logo logo;
 	
 	private JPanel playerListArea;
+	private JPanel panel2;
 	
 	private Map<Object, String> buttonMap;
 
@@ -72,8 +75,7 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView {
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.EAST);
 		
-		JPanel panel2 = new JPanel();
-		panel2.add(new LobbySettingsDisplay());
+		panel2 = new JPanel();
 		
 		JScrollPane settingsArea = new JScrollPane(panel2);
 		panel.add(settingsArea);
@@ -101,6 +103,12 @@ public class InLobbyUIHost extends SwingView implements IInLobbyView {
 	@Override
 	public void setController(IInLobbyController controller) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	private void refreshSettings(){
+		panel2.removeAll();
+		panel2.add(new LobbySettingsDisplay((NormalLobbySettings) DesktopBeans.getContext().getBean(ServerConnection.class).getClientData().getLobby().getSettings()));
 		
 	}
 }
