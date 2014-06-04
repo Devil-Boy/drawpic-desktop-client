@@ -47,7 +47,7 @@ public interface ServerConnection {
 	
 	/**
 	 * Obtains the lobby list from the server
-	 * @return null if lobby creation was successful, otherwise a reason for failure
+	 * @return null if lobby list retrieval was successful, otherwise a reason for failure
 	 */
 	 String pollLobbyList();
 	

@@ -6,8 +6,6 @@ package cse110team4.drawpic.drawpic_desktop.ui;
  *
  */
 public interface ILobbyChoiceView {
-
-	public int getLobbyOption();
 	
 	public void setController(final ILobbyChoiceController controller);
 }

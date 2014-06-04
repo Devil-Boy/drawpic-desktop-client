@@ -15,12 +15,8 @@ public class LogInController implements ILogInController {
 
 	ServerConnection connection;
 	
-	public LogInController(ServerConnection connection){
+	public LogInController(ServerConnection connection, ILogInView view){
 		this.connection = connection;
-	}
-	
-	@Override
-	public void setView(ILogInView view) {
 		this.view = view;
 	}
 

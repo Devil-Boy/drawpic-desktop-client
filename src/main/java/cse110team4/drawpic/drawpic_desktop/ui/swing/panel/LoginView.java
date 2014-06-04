@@ -110,7 +110,6 @@ public class LoginView extends DrawPicUI implements ILogInView{
 
 	@Override
 	public void setController(final ILogInController controller) {
-		controller.setView(this);
 		
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

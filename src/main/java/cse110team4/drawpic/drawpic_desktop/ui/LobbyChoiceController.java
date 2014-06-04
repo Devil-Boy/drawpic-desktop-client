@@ -1,5 +1,9 @@
 package cse110team4.drawpic.drawpic_desktop.ui;
 
+import javax.swing.JOptionPane;
+
+import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
+
 /**
  * @author Kirk
  *
@@ -8,23 +12,28 @@ public class LobbyChoiceController implements ILobbyChoiceController {
 
 	ILobbyChoiceView view;
 	
-	/**
-	 * 
-	 */
-	public LobbyChoiceController() {
-		// TODO Auto-generated constructor stub
+	ServerConnection connection;
+	
+	public LobbyChoiceController(ServerConnection connection, ILobbyChoiceView view){
+		this.connection = connection;
+		this.view = view;
 	}
 
 	@Override
-	public void setLobbyOption() {
-		//TODO:view.getLobbyOption();
-
+	public void createLobby() {
+		String connect = connection.createLobby();
+		if(connect != null){
+			JOptionPane.showMessageDialog(null, "Error creating Lobby:\n" + connect);
+		}
+		
 	}
 
 	@Override
-	public void setView(ILobbyChoiceView viewer) {
-		this.view = viewer;
-
+	public void joinLobby() {
+		String connect = connection.pollLobbyList();
+		if(connect != null){
+			JOptionPane.showMessageDialog(null, "Error retrieving Lobby list:\n" + connect);
+		}
 	}
 
 }

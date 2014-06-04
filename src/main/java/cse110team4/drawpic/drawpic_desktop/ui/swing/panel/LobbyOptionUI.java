@@ -111,13 +111,13 @@ public class LobbyOptionUI extends DrawPicUI implements ILobbyChoiceView{
 		
 		createLobbyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.LobbyOption();
+				controller.createLobby();
 			}
 		});
 		
 		joinLobbyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.LobbyOption();
+				controller.joinLobby();
 			}
 		});
 	}

@@ -12,6 +12,4 @@ package cse110team4.drawpic.drawpic_desktop.ui;
 public interface ILogInController {
 
 	public void login();
-	
-	public void setView(ILogInView view);
 }
