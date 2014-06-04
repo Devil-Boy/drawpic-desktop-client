@@ -69,7 +69,7 @@ public class GameDrawView extends SwingView implements IGameDrawView {
 		
 		JPanel panel_1 = new JPanel();
 		add(panel_1, BorderLayout.EAST);
-		panel_1.setLayout(new GridLayout(3, 1, 0, 0));
+		panel_1.setLayout(new GridLayout(5, 1, 0, 0));
 		
 		JPanel panel_3 = new JPanel();
 		panel_1.add(panel_3);
@@ -101,6 +101,12 @@ public class GameDrawView extends SwingView implements IGameDrawView {
 		ScrollPane scrollPane = new ScrollPane();
 		panel_1.add(scrollPane);
 		scrollPane.add(colorChooser);
+		
+		JPanel panel = new JPanel();
+		panel_1.add(panel);
+		
+		JPanel panel_5 = new JPanel();
+		panel_1.add(panel_5);
 
 	}
 
