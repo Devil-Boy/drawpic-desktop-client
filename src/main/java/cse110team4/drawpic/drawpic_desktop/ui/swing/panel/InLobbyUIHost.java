@@ -22,7 +22,7 @@ import javax.swing.BoxLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 
-public class InLobbyUI extends SwingView {
+public class InLobbyUIHost extends SwingView {
 
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;
@@ -34,8 +34,8 @@ public class InLobbyUI extends SwingView {
 	
 	private Map<Object, String> buttonMap;
 
-	public InLobbyUI(ServerConnection server) {
-		super(server, BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
+	public InLobbyUIHost(ServerConnection server) {
+		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Try getting the logo
 		try {
