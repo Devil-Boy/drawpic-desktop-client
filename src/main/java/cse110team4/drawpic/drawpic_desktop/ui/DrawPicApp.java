@@ -46,7 +46,7 @@ public class DrawPicApp implements ClientListener{
 		GAME_RESULTS
 	}
 	
-	ClientPhase currentPhase;
+	private ClientPhase currentPhase;
 	
     public static void main(String[] args) {
     	new DrawPicApp();
@@ -63,15 +63,23 @@ public class DrawPicApp implements ClientListener{
 	@Override
 	public void usernameSet(ClientUsernameSetEvent event) {
 		if(event.getUsername() != null){
-			this.currentPhase = ClientPhase.LOBBY_OPTION;
+			this.setCurrentPhase(ClientPhase.LOBBY_OPTION);
 		}
 	}
 
 	@Override
 	public void lobbySet(ClientLobbySetEvent event) {
 		if(event.getLobby() != null){
-			this.currentPhase = ClientPhase.IN_LOBBY;
+			this.setCurrentPhase(ClientPhase.IN_LOBBY);
 		}
 		
+	}
+
+	public ClientPhase getCurrentPhase() {
+		return currentPhase;
+	}
+
+	public void setCurrentPhase(ClientPhase currentPhase) {
+		this.currentPhase = currentPhase;
 	}
 }

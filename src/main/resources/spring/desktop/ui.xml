@@ -23,8 +23,11 @@
 	<constructor-arg ref="swingLobbyChoiceView"></constructor-arg>
 	</bean>
 	<bean id="swingLobbyChoiceView"
-		class="cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionUI"
+		class="cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionView"
 		scope="singleton">
-	<constructor-arg ref="jmsServerConnection"></constructor-arg>
+	</bean>
+	<bean id="drawPicApp"
+		class="cse110team4.drawpic.drawpic_desktop.ui.DrawPicApp"
+		scope="singleton">
 	</bean>
 </beans>

@@ -16,7 +16,7 @@ import cse110team4.drawpic.drawpic_desktop.server.MockServerConnection;
 import cse110team4.drawpic.drawpic_desktop.server.ServerConnection;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.DrawPicUI;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyBrowserUI;
-import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionUI;
+import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LobbyOptionView;
 import cse110team4.drawpic.drawpic_desktop.ui.swing.panel.LoginView;
 
 public class SwingUI implements Runnable {
@@ -108,7 +108,7 @@ public class SwingUI implements Runnable {
 	}
 	
 	private int handleLobbyOption() {
-		LobbyOptionUI ui = new LobbyOptionUI(server);
+		LobbyOptionView ui = new LobbyOptionView(server);
 		setUI(ui);
 		return ui.getLobbyOption();
 	}

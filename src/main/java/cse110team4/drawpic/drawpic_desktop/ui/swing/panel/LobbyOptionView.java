@@ -23,7 +23,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class LobbyOptionUI extends DrawPicUI implements ILobbyChoiceView{
+public class LobbyOptionView extends DrawPicUI implements ILobbyChoiceView{
 	private static final Color BG_COLOR = new Color(0x00, 0x9c, 0xff);
 	private static final int PREFERRED_WIDTH = 300;
 	private static final int PREFERRED_HEIGHT = 300;
@@ -32,7 +32,7 @@ public class LobbyOptionUI extends DrawPicUI implements ILobbyChoiceView{
 	private JButton createLobbyButton;
 	private JButton joinLobbyButton;
 	
-	public LobbyOptionUI(ServerConnection server) {
+	public LobbyOptionView() {
 		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Add all the content

@@ -40,7 +40,7 @@ public class LobbyBrowserUI extends DrawPicUI {
 	JPanel lobbyListArea;
 	
 	public LobbyBrowserUI(ServerConnection server) {
-		super(server, BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
+		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
 		
 		// Add all the content
 		addContent();
