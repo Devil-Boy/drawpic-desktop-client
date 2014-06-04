@@ -39,10 +39,8 @@ public class LobbyBrowserUI extends SwingView implements ILobbyBrowsingView, Ser
 	private JButton backButton;
 	private JButton refreshButton;
 	
-	public LobbyBrowserUI(EventDispatcher dispatcher) {
+	public LobbyBrowserUI() {
 		super(BG_COLOR, PREFERRED_WIDTH, PREFERRED_HEIGHT);
-
-		dispatcher.register(ServerLobbyListSetEvent.class, this);
 		
 		// Add all the content
 		addContent();
@@ -78,7 +76,7 @@ public class LobbyBrowserUI extends SwingView implements ILobbyBrowsingView, Ser
 		displayLobbies(event.getLobbyList());
 	}
 	
-	private void displayLobbies(List<Lobby> lobbies) {
+	public void displayLobbies(List<Lobby> lobbies) {
 		// Empty the container
 		lobbyListArea.removeAll();
 		
@@ -131,6 +129,8 @@ public class LobbyBrowserUI extends SwingView implements ILobbyBrowsingView, Ser
 
 	@Override
 	public void setController(final ILobbyBrowsingController controller) {
+		this.controller = controller;
+		
 		backButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.goBack();
