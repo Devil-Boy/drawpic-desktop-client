@@ -3,7 +3,6 @@ package cse110team4.drawpic.drawpic_desktop.ui;
 import javax.swing.JOptionPane;
 
 import cse110team4.drawpic.drawpic_core.player.Lobby;
-import cse110team4.drawpic.drawpic_core.player.LobbySettings;
 import cse110team4.drawpic.drawpic_core.player.NormalLobbySettings;
 import cse110team4.drawpic.drawpic_core.player.NormalLobbySettings.JudgeSetting;
 import cse110team4.drawpic.drawpic_desktop.DesktopBeans;
@@ -26,7 +25,7 @@ public class InLobbyController implements IInLobbyController {
 	public void leaveLobby() {
 		String leaveResult = connection.leaveLobby();
 		if (leaveResult == null) {
-			DesktopBeans.getContext().getBean(DrawPicApp.class).setCurrentPhase(ClientPhase.LOBBY_BROWSING);
+			DesktopBeans.getContext().getBean(DrawPicApp.class).setCurrentPhase(ClientPhase.LOBBY_OPTION);
 		} else {
 			JOptionPane.showMessageDialog(null, "Error with leaving lobby:\n" + leaveResult);
 		}
